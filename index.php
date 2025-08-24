@@ -20,24 +20,8 @@
 |____/|_|\_\\__,_/___|_____|
     </pre>
     <h2>Repair. Modding. Modern Support.</h2>
-    <p>Get started below. Whether you're fixing, upgrading, or building — SkuzE has you covered.</p>
+    <p>Whether you're fixing, upgrading, or building — SkuzE has you covered.</p>
 
-    <div class="cta-buttons">
-      <a href="services.php">Services</a>
-      <a href="buy.php">Buy</a>
-      <a href="sell.php">Sell</a>
-      <a href="trade.php">Trade</a>
-    </div>
-
-    <div class="secondary-links">
-      <a href="about.php">About</a>
-      <a href="help.php">Help/FAQ</a>
-      <?php if(isset($_SESSION['user_id'])): ?>
-        <a href="dashboard.php">Dashboard</a>
-      <?php else: ?>
-        <a href="login.php">Login / Register</a>
-      <?php endif; ?>
-    </div>
   </div>
 
   <?php include 'includes/footer.php'; ?>

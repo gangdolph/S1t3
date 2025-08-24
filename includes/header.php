@@ -54,6 +54,7 @@ if (file_exists($settingsFile)) {
     <ul>
       <li><a href="/index.php">Home</a></li>
       <li><a href="/about.php">About</a></li>
+      <li><a href="/help.php">Help/FAQ</a></li>
 <?php if (empty($_SESSION['user_id'])): ?>
       <li><a href="/login.php">Login</a></li>
       <li><a href="/register.php">Register</a></li>
