@@ -40,6 +40,7 @@ if ($viewer === $target) {
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2><?= htmlspecialchars($username); ?></h2>
   <?php if ($isPrivate && !$isFriend): ?>

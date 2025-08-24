@@ -8,10 +8,17 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
 
   <div class="hero">
-    <img src="assets/logo.png" alt="SkuzE logo" class="hero-logo" />
+    <pre class="hero-ascii">
+ ____  _              _____
+/ ___|| | ___   _ ___| ____|
+\___ \| |/ / | | |_  /  _|
+ ___) |   <| |_| |/ /| |___
+|____/|_|\_\\__,_/___|_____|
+    </pre>
     <h2>Repair. Modding. Modern Support.</h2>
     <p>Get started below. Whether you're fixing, upgrading, or building — SkuzE has you covered.</p>
 

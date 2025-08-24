@@ -30,6 +30,7 @@ $stmt->close();
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>My Listings</h2>
   <p><a href="sell.php">Create a new listing</a></p>

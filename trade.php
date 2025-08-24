@@ -52,6 +52,7 @@ if ($stmt) {
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
 
   <?php if ($db_error): ?>

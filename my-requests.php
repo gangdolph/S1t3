@@ -24,6 +24,7 @@ if ($stmt === false) {
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>My Requests</h2>
   <p><a href="dashboard.php">← Back to Dashboard</a></p>

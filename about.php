@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>About SkuzE</h2>
   <p>SkuzE provides repair, modding, and custom build services for your electronics.</p>

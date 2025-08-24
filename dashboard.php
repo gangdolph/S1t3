@@ -25,6 +25,7 @@ if ($stmt === false) {
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
 
   <h2>Welcome, <?= htmlspecialchars($username) ?></h2>

@@ -15,7 +15,11 @@ function username_with_avatar(mysqli $conn, int $user_id, ?string $username = nu
         $stmt->execute();
         $stmt->bind_result($path);
         if ($stmt->fetch() && $path) {
-            $avatar = '/assets/avatars/' . $path;
+            if (strpos($path, '/') !== false) {
+                $avatar = $path;
+            } else {
+                $avatar = '/assets/avatars/' . $path;
+            }
         }
         $stmt->close();
     }

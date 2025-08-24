@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
   } elseif (isset($_POST['update_profile'])) {
     $isPrivate = isset($_POST['is_private']) ? 1 : 0;
-    $avatarPath = $avatar;
+    $avatarFilename = basename($avatar);
     if (!empty($_FILES['avatar']['name']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
       $tmp = $_FILES['avatar']['tmp_name'];
       $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
@@ -96,17 +96,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!is_dir('assets/avatars')) {
           mkdir('assets/avatars', 0777, true);
         }
-        $avatarPath = 'assets/avatars/' . $id . '_' . time() . '.' . $ext;
+        $avatarFilename = $id . '_' . time() . '.' . $ext;
+        $avatarPath = 'assets/avatars/' . $avatarFilename;
         if (!move_uploaded_file($tmp, $avatarPath)) {
-          $avatarPath = $avatar;
+          $avatarFilename = basename($avatar);
         }
       }
     }
     $stmt = $conn->prepare("REPLACE INTO profiles (user_id, avatar_path, is_private) VALUES (?, ?, ?)");
     if ($stmt) {
-      $stmt->bind_param('isi', $id, $avatarPath, $isPrivate);
+      $stmt->bind_param('isi', $id, $avatarFilename, $isPrivate);
       if ($stmt->execute()) {
-        $avatar = $avatarPath;
+        $avatar = $avatarFilename ? 'assets/avatars/' . $avatarFilename : '';
         $msg = "Profile settings updated.";
       } else {
         $error = "Database error.";
@@ -158,8 +159,12 @@ $stmt3 = $conn->prepare("SELECT avatar_path, is_private FROM profiles WHERE user
 if ($stmt3) {
   $stmt3->bind_param('i', $id);
   if ($stmt3->execute()) {
-    $stmt3->bind_result($avatar, $isPrivate);
-    $stmt3->fetch();
+    $stmt3->bind_result($avatarName, $isPrivate);
+    if ($stmt3->fetch() && $avatarName) {
+      $avatar = 'assets/avatars/' . $avatarName;
+    } else {
+      $avatar = '';
+    }
   }
   $stmt3->close();
 }
@@ -171,6 +176,7 @@ if ($stmt3) {
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>Edit Profile</h2>
   <?php if (!empty($error)) echo "<p style='color:red;'>" . htmlspecialchars($error) . "</p>"; ?>
