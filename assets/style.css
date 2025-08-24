@@ -120,17 +120,6 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.secondary-links {
-  text-align: center;
-  margin-top: 2rem;
-  font-size: 0.9rem;
-}
-
-.secondary-links a {
-  margin: 0 0.5rem;
-  color: var(--accent);
-  text-decoration: none;
-}
 #theme-toggle {
   position: fixed;
   top: 1rem;
@@ -162,17 +151,18 @@ footer {
 }
 
 /* Navigation */
+
 .site-header {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 0;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 .logo-img {
-  max-width: 100px;
-  width: 100%;
+  max-width: 60px;
   height: auto;
 }
 
@@ -311,11 +301,6 @@ tbody tr:nth-child(even) {
 }
 
 @media (min-width: 600px) {
-  .site-header {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
   .site-nav ul {
     gap: 2rem;
   }
