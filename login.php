@@ -166,6 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>Login</h2>
   <?php if (!empty($error)) echo "<p style='color:red;'>" . htmlspecialchars($error) . "</p>"; ?>

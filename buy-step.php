@@ -16,6 +16,7 @@ function label($text, $name, $type = 'text', $required = true) {
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <?php if ($category === ''): ?>
     <h2>Request a Device</h2>

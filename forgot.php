@@ -66,6 +66,7 @@ require 'mail.php';
 <html>
 <head><title>Forgot Password</title></head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>Forgot Password</h2>
   <?php if (!empty($msg)) echo "<p>" . htmlspecialchars($msg) . "</p>"; ?>

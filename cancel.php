@@ -8,6 +8,7 @@ require 'includes/auth.php';
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>Payment Canceled</h2>
   <p>Your payment was canceled. No charges were made.</p>

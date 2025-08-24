@@ -48,34 +48,18 @@ if (file_exists($settingsFile)) {
 </style>
 <header class="site-header">
   <a href="/index.php" class="logo-link">
-    <img src="/assets/logo.png" alt="SkuzE Logo">
+    <img class="logo-img" src="/assets/logo.png" alt="SkuzE Logo">
   </a>
   <nav class="site-nav">
     <ul>
-      <li><a class="nav-button" href="/services.php">Services</a></li>
-      <li><a class="nav-button" href="/buy.php">Buy</a></li>
-      <li><a class="nav-button" href="/sell.php">Sell</a></li>
-      <li><a class="nav-button" href="/trade.php">Trade</a></li>
-      <li><a class="nav-button" href="/forum/index.php">Forum</a></li>
+      <li><a href="/index.php">Home</a></li>
+      <li><a href="/about.php">About</a></li>
 <?php if (empty($_SESSION['user_id'])): ?>
-      <li><a class="nav-button" href="/login.php">Login</a></li>
-      <li><a class="nav-button" href="/register.php">Register</a></li>
+      <li><a href="/login.php">Login</a></li>
+      <li><a href="/register.php">Register</a></li>
 <?php else: ?>
-      <li class="nav-username">Hello, <?= username_with_avatar(
-        $conn,
-        $_SESSION['user_id'],
-        $username
-      ); ?></li>
-      <li class="nav-status">Status: <?= htmlspecialchars(
-        $status,
-        ENT_QUOTES,
-        'UTF-8'
-      ) ?></li>
-      <li><a class="nav-button" href="/dashboard.php">Dashboard</a></li>
-      <?php if (!empty($_SESSION['is_admin'])): ?>
-        <li><a class="nav-button" href="/admin/index.php">Admin</a></li>
-      <?php endif; ?>
-      <li><a class="nav-button" href="/logout.php">Logout</a></li>
+      <li><a href="/dashboard.php">Dashboard</a></li>
+      <li><a href="/logout.php">Logout</a></li>
 <?php endif; ?>
     </ul>
   </nav>

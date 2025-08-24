@@ -20,6 +20,7 @@ function label($text, $name, $type = 'text', $required = true) {
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>Sell - <?= htmlspecialchars(ucfirst($category)) ?> Details</h2>
 

@@ -9,6 +9,7 @@ require 'includes/csrf.php';
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
 
   <h2>Select a Service</h2>

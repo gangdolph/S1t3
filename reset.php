@@ -87,6 +87,7 @@ if ($token) {
 <html>
 <head><title>Reset Password</title></head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>Reset Password</h2>
   <?php if (!empty($error)) echo "<p style='color:red;'>" . htmlspecialchars($error) . "</p>"; ?>

@@ -64,6 +64,7 @@ if ($token) {
 <html>
 <head><title>Verify</title></head>
 <body>
+  <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>Email Verification</h2>
   <p><?= $msg ?></p>
