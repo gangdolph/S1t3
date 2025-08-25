@@ -1,4 +1,5 @@
 (function() {
+  document.body.classList.add('vap-lines');
   const setTheme = theme => document.documentElement.setAttribute('data-theme', theme);
   const stored = localStorage.getItem('theme');
   if (stored) {

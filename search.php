@@ -148,14 +148,14 @@ if ($q !== '') {
             $stmt->fetch();
             $totalTradePages = (int)ceil($totalTrades / $perPage);
         } else {
-            error_log($stmt->error);
+            error_log("Trade count query failed: {$stmt->error} | SQL: {$countSql}");
             http_response_code(500);
             $searchError = true;
             $errorMessage = 'Search is currently unavailable.';
         }
         $stmt->close();
     } else {
-        error_log($conn->error);
+        error_log("Trade count prepare failed: {$conn->error} | SQL: {$countSql}");
         http_response_code(500);
         $searchError = true;
         $errorMessage = 'Search is currently unavailable.';
@@ -164,8 +164,10 @@ if ($q !== '') {
     $tradeSql = "SELECT r.id, r.make, r.model, r.device_type, u.username
                  FROM service_requests r
                  JOIN users u ON r.user_id = u.id
-                 WHERE r.type='trade' AND (r.make LIKE ? OR r.model LIKE ? OR r.device_type LIKE ?)
-                 ORDER BY r.created_at DESC LIMIT ? OFFSET ?";
+                 WHERE r.type = 'trade'
+                   AND (r.make LIKE ? OR r.model LIKE ? OR r.device_type LIKE ?)
+                 ORDER BY r.created_at DESC
+                 LIMIT ? OFFSET ?";
     $tradeParams = [$like, $like, $like, $perPage, $offset];
     $tradeTypes = 'sssii';
     if ($stmt = $conn->prepare($tradeSql)) {
@@ -173,14 +175,14 @@ if ($q !== '') {
         if ($stmt->execute()) {
             $tradeResults = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         } else {
-            error_log($stmt->error);
+            error_log("Trade search query failed: {$stmt->error} | SQL: {$tradeSql}");
             http_response_code(500);
             $searchError = true;
             $errorMessage = 'Search is currently unavailable.';
         }
         $stmt->close();
     } else {
-        error_log($conn->error);
+        error_log("Trade search prepare failed: {$conn->error} | SQL: {$tradeSql}");
         http_response_code(500);
         $searchError = true;
         $errorMessage = 'Search is currently unavailable.';
