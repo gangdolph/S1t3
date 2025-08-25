@@ -25,7 +25,7 @@ if (!$id || $make === '' || $model === '' || $device_type === '' || $issue === '
 }
 
 if (!empty($_FILES['photo']['name'])) {
-  $upload_path = __DIR__ . '/../uploads/';
+  $upload_path = __DIR__ . '/uploads/';
   if (!is_dir($upload_path)) {
     mkdir($upload_path, 0755, true);
   }

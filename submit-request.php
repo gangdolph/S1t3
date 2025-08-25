@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // ✅ Handle optional file upload
         if (!$error && !empty($_FILES['photo']['name'])) {
-          $upload_path = __DIR__ . '/../uploads/';
+          $upload_path = __DIR__ . '/uploads/';
           if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, true);
           }
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               $subject = "New Service Request Submitted";
               $body = "User ID: $user_id\nType: $type\nCategory: $category\nMake/Model: $make $model\nSerial: $serial\nBuild Request: $build\nDevice Type: $device_type\nIssue: $issue";
               if ($filename) {
-                $body .= "\nPhoto stored at: ../uploads/$filename";
+                $body .= "\nPhoto stored at: uploads/$filename";
               }
               try {
                 send_email($adminEmail, $subject, $body);

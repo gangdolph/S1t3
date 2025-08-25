@@ -83,7 +83,7 @@ $stmt->close();
               <p>Price: $<?= htmlspecialchars($l['price']) ?></p>
               <p>Category: <?= htmlspecialchars($l['category']) ?></p>
               <?php if ($l['image']): ?>
-                <img src="../uploads/<?= htmlspecialchars($l['image']) ?>" alt="" width="120">
+                <img src="uploads/<?= htmlspecialchars($l['image']) ?>" alt="" width="120">
               <?php endif; ?>
             </a>
           </li>

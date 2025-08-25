@@ -24,6 +24,7 @@
     <div class="cta-buttons">
       <a href="buy.php">Buy</a>
       <a href="sell.php">Sell</a>
+      <a href="trade.php">Trade</a>
       <a href="services.php">Services</a>
     </div>
   </div>

@@ -12,6 +12,8 @@ $offset = ($page - 1) * $perPage;
 
 $userResults = $listingResults = $tradeResults = [];
 $totalUserPages = $totalListingPages = $totalTradePages = 0;
+$searchError = false;
+$errorMessage = '';
 
 if ($q !== '') {
     // Users search
@@ -26,11 +28,22 @@ if ($q !== '') {
     }
     if ($stmt = $conn->prepare($countSql)) {
         $stmt->bind_param($countTypes, ...$countParams);
-        $stmt->execute();
-        $stmt->bind_result($totalUsers);
-        $stmt->fetch();
+        if ($stmt->execute()) {
+            $stmt->bind_result($totalUsers);
+            $stmt->fetch();
+            $totalUserPages = (int)ceil($totalUsers / $perPage);
+        } else {
+            error_log($stmt->error);
+            http_response_code(500);
+            $searchError = true;
+            $errorMessage = 'Search is currently unavailable.';
+        }
         $stmt->close();
-        $totalUserPages = (int)ceil($totalUsers / $perPage);
+    } else {
+        error_log($conn->error);
+        http_response_code(500);
+        $searchError = true;
+        $errorMessage = 'Search is currently unavailable.';
     }
 
     $userSql = "SELECT id, username, status FROM users WHERE username LIKE ?";
@@ -47,9 +60,20 @@ if ($q !== '') {
     $userTypes .= 'ii';
     if ($stmt = $conn->prepare($userSql)) {
         $stmt->bind_param($userTypes, ...$userParams);
-        $stmt->execute();
-        $userResults = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        if ($stmt->execute()) {
+            $userResults = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        } else {
+            error_log($stmt->error);
+            http_response_code(500);
+            $searchError = true;
+            $errorMessage = 'Search is currently unavailable.';
+        }
         $stmt->close();
+    } else {
+        error_log($conn->error);
+        http_response_code(500);
+        $searchError = true;
+        $errorMessage = 'Search is currently unavailable.';
     }
 
     // Listings search
@@ -63,16 +87,26 @@ if ($q !== '') {
     }
     if ($stmt = $conn->prepare($countSql)) {
         $stmt->bind_param($countTypes, ...$countParams);
-        $stmt->execute();
-        $stmt->bind_result($totalListings);
-        $stmt->fetch();
+        if ($stmt->execute()) {
+            $stmt->bind_result($totalListings);
+            $stmt->fetch();
+            $totalListingPages = (int)ceil($totalListings / $perPage);
+        } else {
+            error_log($stmt->error);
+            http_response_code(500);
+            $searchError = true;
+            $errorMessage = 'Search is currently unavailable.';
+        }
         $stmt->close();
-        $totalListingPages = (int)ceil($totalListings / $perPage);
+    } else {
+        error_log($conn->error);
+        http_response_code(500);
+        $searchError = true;
+        $errorMessage = 'Search is currently unavailable.';
     }
 
-    $listSql = "SELECT l.id, l.title, l.description, l.category, COALESCE(COUNT(r.id),0) AS trades
+    $listSql = "SELECT l.id, l.title, l.description, l.category
                 FROM listings l
-                LEFT JOIN service_requests r ON r.listing_id = l.id AND r.type='trade'
                 WHERE (l.title LIKE ? OR l.description LIKE ? OR l.category LIKE ?)";
     $listParams = [$like, $like, $like];
     $listTypes = 'sss';
@@ -81,15 +115,26 @@ if ($q !== '') {
         $listParams[] = $category;
         $listTypes .= 's';
     }
-    $listSql .= " GROUP BY l.id ORDER BY l.created_at DESC LIMIT ? OFFSET ?";
+    $listSql .= " ORDER BY l.created_at DESC LIMIT ? OFFSET ?";
     $listParams[] = $perPage;
     $listParams[] = $offset;
     $listTypes .= 'ii';
     if ($stmt = $conn->prepare($listSql)) {
         $stmt->bind_param($listTypes, ...$listParams);
-        $stmt->execute();
-        $listingResults = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        if ($stmt->execute()) {
+            $listingResults = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        } else {
+            error_log($stmt->error);
+            http_response_code(500);
+            $searchError = true;
+            $errorMessage = 'Search is currently unavailable.';
+        }
         $stmt->close();
+    } else {
+        error_log($conn->error);
+        http_response_code(500);
+        $searchError = true;
+        $errorMessage = 'Search is currently unavailable.';
     }
 
     // Trade requests search
@@ -98,11 +143,22 @@ if ($q !== '') {
     $countTypes = 'sss';
     if ($stmt = $conn->prepare($countSql)) {
         $stmt->bind_param($countTypes, ...$countParams);
-        $stmt->execute();
-        $stmt->bind_result($totalTrades);
-        $stmt->fetch();
+        if ($stmt->execute()) {
+            $stmt->bind_result($totalTrades);
+            $stmt->fetch();
+            $totalTradePages = (int)ceil($totalTrades / $perPage);
+        } else {
+            error_log($stmt->error);
+            http_response_code(500);
+            $searchError = true;
+            $errorMessage = 'Search is currently unavailable.';
+        }
         $stmt->close();
-        $totalTradePages = (int)ceil($totalTrades / $perPage);
+    } else {
+        error_log($conn->error);
+        http_response_code(500);
+        $searchError = true;
+        $errorMessage = 'Search is currently unavailable.';
     }
 
     $tradeSql = "SELECT r.id, r.make, r.model, r.device_type, u.username
@@ -114,9 +170,20 @@ if ($q !== '') {
     $tradeTypes = 'sssii';
     if ($stmt = $conn->prepare($tradeSql)) {
         $stmt->bind_param($tradeTypes, ...$tradeParams);
-        $stmt->execute();
-        $tradeResults = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        if ($stmt->execute()) {
+            $tradeResults = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        } else {
+            error_log($stmt->error);
+            http_response_code(500);
+            $searchError = true;
+            $errorMessage = 'Search is currently unavailable.';
+        }
         $stmt->close();
+    } else {
+        error_log($conn->error);
+        http_response_code(500);
+        $searchError = true;
+        $errorMessage = 'Search is currently unavailable.';
     }
 }
 
@@ -151,6 +218,8 @@ $totalPages = max($totalUserPages, $totalListingPages, $totalTradePages);
   </form>
 <?php if ($q === ''): ?>
   <p>Please enter a search query.</p>
+<?php elseif ($searchError): ?>
+  <p><?= htmlspecialchars($errorMessage) ?></p>
 <?php else: ?>
   <section>
     <h3>Users</h3>
@@ -168,9 +237,9 @@ $totalPages = max($totalUserPages, $totalListingPages, $totalTradePages);
     <h3>Listings</h3>
     <?php if ($listingResults): ?>
       <ul>
-      <?php foreach ($listingResults as $l): ?>
-        <li><a href="checkout.php?listing_id=<?= $l['id']; ?>"><?= htmlspecialchars($l['title']) ?></a> - <?= htmlspecialchars($l['category']) ?> (<?= htmlspecialchars($l['trades']) ?> trades)</li>
-      <?php endforeach; ?>
+        <?php foreach ($listingResults as $l): ?>
+          <li><a href="checkout.php?listing_id=<?= $l['id']; ?>"><?= htmlspecialchars($l['title']) ?></a> - <?= htmlspecialchars($l['category']) ?></li>
+        <?php endforeach; ?>
       </ul>
     <?php else: ?>
       <p>No listings found.</p>
