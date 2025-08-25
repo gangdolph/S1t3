@@ -21,7 +21,11 @@
     </pre>
     <h2>Repair. Modding. Modern Support.</h2>
     <p>Whether you're fixing, upgrading, or building — SkuzE has you covered.</p>
-
+    <div class="cta-buttons">
+      <a href="buy.php">Buy</a>
+      <a href="sell.php">Sell</a>
+      <a href="services.php">Services</a>
+    </div>
   </div>
 
   <?php include 'includes/footer.php'; ?>
