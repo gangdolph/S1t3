@@ -30,8 +30,7 @@ if ($stmt) {
   $stmt->close();
 }
 ?>
-<!DOCTYPE html>
-<html>
+<?php require 'includes/layout.php'; ?>
 <head>
   <title>Followers</title>
   <link rel="stylesheet" href="assets/style.css">

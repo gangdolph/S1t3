@@ -1,8 +1,7 @@
 <?php
 require 'includes/auth.php';
 ?>
-<!DOCTYPE html>
-<html>
+<?php require 'includes/layout.php'; ?>
 <head>
   <title>Payment Success</title>
   <link rel="stylesheet" href="assets/style.css">

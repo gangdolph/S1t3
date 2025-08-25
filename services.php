@@ -2,8 +2,7 @@
 require 'includes/auth.php';
 require 'includes/csrf.php';
 ?>
-<!DOCTYPE html>
-<html>
+<?php require 'includes/layout.php'; ?>
 <head>
   <title>Request a Service</title>
   <link rel="stylesheet" href="assets/style.css">

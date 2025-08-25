@@ -48,8 +48,7 @@ $stmt->execute();
 $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 ?>
-<!DOCTYPE html>
-<html lang="en">
+<?php require 'includes/layout.php'; ?>
 <head>
   <meta charset="UTF-8">
   <title>Buy from SkuzE</title>

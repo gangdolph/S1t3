@@ -29,6 +29,10 @@ $defaults = [
   'color2' => '#01cdfe',
   'color3' => '#05ffa1',
   'speed' => 20,
+  'header_texture' => '',
+  'footer_texture' => '',
+  'sidebar_depth' => 12,
+  'button_depth' => 6,
 ];
 $settingsFile = __DIR__ . '/../assets/vaporwave.json';
 if (file_exists($settingsFile)) {
@@ -44,6 +48,10 @@ if (file_exists($settingsFile)) {
     --vap2: <?= htmlspecialchars($defaults['color2'], ENT_QUOTES, 'UTF-8'); ?>;
     --vap3: <?= htmlspecialchars($defaults['color3'], ENT_QUOTES, 'UTF-8'); ?>;
     --vap-speed: <?= htmlspecialchars($defaults['speed'], ENT_QUOTES, 'UTF-8'); ?>s;
+    --header-texture: <?= $defaults['header_texture'] ? 'url(' . htmlspecialchars($defaults['header_texture'], ENT_QUOTES, 'UTF-8') . ')' : 'none'; ?>;
+    --footer-texture: <?= $defaults['footer_texture'] ? 'url(' . htmlspecialchars($defaults['footer_texture'], ENT_QUOTES, 'UTF-8') . ')' : 'none'; ?>;
+    --nav-depth: <?= htmlspecialchars($defaults['sidebar_depth'], ENT_QUOTES, 'UTF-8'); ?>px;
+    --btn-depth: <?= htmlspecialchars($defaults['button_depth'], ENT_QUOTES, 'UTF-8'); ?>px;
   }
 </style>
 <header class="site-header">

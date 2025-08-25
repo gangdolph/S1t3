@@ -1,6 +1,5 @@
 <?php session_start(); ?>
-<!DOCTYPE html>
-<html lang="en">
+<?php require 'includes/layout.php'; ?>
 <head>
   <meta charset="UTF-8">
   <title>Help & FAQ</title>

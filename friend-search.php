@@ -46,8 +46,7 @@ if ($query !== '') {
   }
 }
 ?>
-<!DOCTYPE html>
-<html>
+<?php require 'includes/layout.php'; ?>
 <head>
   <title>Find Friends</title>
   <link rel="stylesheet" href="assets/style.css">

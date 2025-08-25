@@ -23,8 +23,7 @@ $stmt->execute();
 $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 ?>
-<!DOCTYPE html>
-<html>
+<?php require 'includes/layout.php'; ?>
 <head>
   <title>My Listings</title>
   <link rel="stylesheet" href="assets/style.css">
