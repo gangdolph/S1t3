@@ -44,8 +44,7 @@ if ($stmt) {
   error_log('Prepare failed: ' . $conn->error);
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
+<?php require 'includes/layout.php'; ?>
 <head>
   <meta charset="UTF-8">
   <title><?= $editing ? 'Update Trade Request' : 'Trade with SkuzE' ?></title>

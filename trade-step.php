@@ -13,8 +13,7 @@ function label($text, $name, $type = 'text', $required = true) {
   echo "<input name=\"$name\" type=\"$type\" " . ($required ? "required" : "") . ">";
 }
 ?>
-<!DOCTYPE html>
-<html>
+<?php require 'includes/layout.php'; ?>
 <head>
   <title>Trade Details</title>
   <link rel="stylesheet" href="assets/style.css">

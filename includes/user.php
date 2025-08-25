@@ -16,9 +16,14 @@ function username_with_avatar(mysqli $conn, int $user_id, ?string $username = nu
         $stmt->bind_result($path);
         if ($stmt->fetch() && $path) {
             if (strpos($path, '/') !== false) {
-                $avatar = $path;
+                $candidate = $path;
+                $fileCheck = $path[0] === '/' ? __DIR__ . '/../' . ltrim($path, '/') : $path;
             } else {
-                $avatar = '/assets/avatars/' . $path;
+                $candidate = '/assets/avatars/' . $path;
+                $fileCheck = __DIR__ . '/../assets/avatars/' . $path;
+            }
+            if (is_file($fileCheck)) {
+                $avatar = $candidate;
             }
         }
         $stmt->close();

@@ -17,6 +17,16 @@ if (!$found) {
   echo 'User not found.';
   exit;
 }
+if ($avatar) {
+  if (strpos($avatar, '/') !== false) {
+    $candidate = $avatar;
+    $fs = $avatar[0] === '/' ? __DIR__ . '/' . ltrim($avatar, '/') : __DIR__ . '/' . $avatar;
+  } else {
+    $candidate = 'assets/avatars/' . $avatar;
+    $fs = __DIR__ . '/assets/avatars/' . $avatar;
+  }
+  $avatar = is_file($fs) ? $candidate : '';
+}
 
 $viewer = $_SESSION['user_id'];
 $isFriend = false;
@@ -33,8 +43,7 @@ if ($viewer === $target) {
   }
 }
 ?>
-<!DOCTYPE html>
-<html>
+<?php require 'includes/layout.php'; ?>
 <head>
   <title>Profile of <?= htmlspecialchars($username); ?></title>
   <link rel="stylesheet" href="assets/style.css">

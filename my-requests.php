@@ -17,8 +17,7 @@ if ($stmt === false) {
   $stmt->close();
 }
 ?>
-<!DOCTYPE html>
-<html>
+<?php require 'includes/layout.php'; ?>
 <head>
   <title>My Service Requests</title>
   <link rel="stylesheet" href="assets/style.css">

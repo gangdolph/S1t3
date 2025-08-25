@@ -83,8 +83,7 @@ if ($token) {
   $error = "No token provided.";
 }
 ?>
-<!DOCTYPE html>
-<html>
+<?php require 'includes/layout.php'; ?>
 <head><title>Reset Password</title></head>
 <body>
   <?php include 'includes/sidebar.php'; ?>

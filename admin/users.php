@@ -67,8 +67,7 @@ if ($result = $conn->query('SELECT id, username, email, status, is_admin FROM us
   $result->close();
 }
 ?>
-<!DOCTYPE html>
-<html>
+<?php require '../includes/layout.php'; ?>
 <head>
   <title>Manage Users</title>
   <link rel="stylesheet" href="../assets/style.css">

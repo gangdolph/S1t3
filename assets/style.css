@@ -7,6 +7,12 @@
   --vap2: #01cdfe;
   --vap3: #05ffa1;
   --vap-speed: 20s;
+  --header-depth: 10px;
+  --nav-depth: 12px;
+  --footer-depth: 10px;
+  --header-texture: none;
+  --footer-texture: none;
+  --btn-depth: 6px;
 }
 
 [data-theme='dark'] {
@@ -99,11 +105,24 @@ body {
 
 
 .hero-ascii {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-ascii pre {
   font-family: monospace;
   font-size: clamp(1rem, 4vw, 2rem);
   line-height: 1;
   text-align: center;
   margin: 0;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
 }
 
 .cta-buttons {
@@ -112,20 +131,45 @@ body {
   gap: 1rem;
   width: 100%;
   max-width: 600px;
-  margin: 2rem auto;
+  margin-top: 2rem;
   align-items: center;
+  justify-content: center;
 }
+
 
 .cta-buttons a {
   text-decoration: none;
   text-align: center;
   padding: 0.75rem;
-  background: var(--accent);
-  color: white;
   border-radius: 5px;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
   transform: perspective(400px) translateZ(0);
-  transition: transform 0.1s, box-shadow 0.1s, opacity 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-cta {
+  background: linear-gradient(135deg, var(--accent), var(--vap2));
+  background-size: 200% 200%;
+  color: #fff;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+  animation: ctaFlow 6s ease infinite;
+  transition: transform 0.2s, box-shadow 0.2s, background-position 0.5s, opacity 0.2s;
+}
+
+.btn-cta:hover {
+  opacity: 0.9;
+  transform: perspective(400px) translateZ(var(--btn-depth));
+  box-shadow: 0 var(--btn-depth) var(--btn-depth) rgba(0, 0, 0, 0.4);
+}
+
+.btn-cta:active {
+  transform: perspective(400px) translateZ(calc(var(--btn-depth) / 3));
+  box-shadow: inset 0 calc(var(--btn-depth) / 3) 0 rgba(0, 0, 0, 0.4);
+}
+
+@keyframes ctaFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 @media (min-width: 768px) {
@@ -142,17 +186,6 @@ body {
   .cta-buttons a {
     flex: 1;
   }
-}
-
-.cta-buttons a:hover {
-  opacity: 0.9;
-  transform: perspective(400px) translateZ(6px);
-  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.4);
-}
-
-.cta-buttons a:active {
-  transform: perspective(400px) translateZ(2px);
-  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.4);
 }
 
 .listing-link {
@@ -182,7 +215,7 @@ footer {
   margin-top: 3rem;
   text-align: center;
   font-size: 0.9rem;
-  background: var(--bg);
+  background: var(--footer-texture), linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), var(--gradient);
   padding: 1rem 0;
   box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.5), 0 2px 3px rgba(255, 255, 255, 0.1);
   transform: perspective(500px) translateZ(0);
@@ -190,8 +223,8 @@ footer {
 }
 
 footer:hover {
-  transform: perspective(500px) translateZ(10px);
-  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(255, 255, 255, 0.2);
+  transform: perspective(500px) translateZ(var(--footer-depth));
+  box-shadow: 0 -4px var(--footer-depth) rgba(0, 0, 0, 0.6), 0 4px var(--footer-depth) rgba(255, 255, 255, 0.2);
 }
 
 .user-display {
@@ -216,7 +249,7 @@ footer:hover {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: var(--bg);
+  background: var(--header-texture), linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)), var(--gradient);
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5), 0 -2px 3px rgba(255, 255, 255, 0.1);
   perspective: 500px;
   transform: perspective(500px) translateZ(0);
@@ -224,8 +257,8 @@ footer:hover {
 }
 
 .site-header:hover {
-  transform: perspective(500px) translateZ(10px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), 0 -4px 8px rgba(255, 255, 255, 0.2);
+  transform: perspective(500px) translateZ(var(--header-depth));
+  box-shadow: 0 4px var(--header-depth) rgba(0, 0, 0, 0.6), 0 -4px var(--header-depth) rgba(255, 255, 255, 0.2);
 }
 
 .logo-img {
@@ -294,19 +327,19 @@ form button {
   border: none;
   border-radius: 4px;
   width: 100%;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 calc(var(--btn-depth) / 2) 0 rgba(0, 0, 0, 0.4);
   transform: perspective(400px) translateZ(0);
   transition: transform 0.1s, box-shadow 0.1s;
 }
 
 form button:hover {
-  transform: perspective(400px) translateZ(6px);
-  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.4);
+  transform: perspective(400px) translateZ(var(--btn-depth));
+  box-shadow: 0 var(--btn-depth) var(--btn-depth) rgba(0, 0, 0, 0.4);
 }
 
 form button:active {
-  transform: perspective(400px) translateZ(2px);
-  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.4);
+  transform: perspective(400px) translateZ(calc(var(--btn-depth) / 3));
+  box-shadow: inset 0 calc(var(--btn-depth) / 3) 0 rgba(0, 0, 0, 0.4);
 }
 
 /* Tables */
@@ -448,7 +481,7 @@ tbody tr:nth-child(even) {
   left: 0;
   height: 100%;
   width: 200px;
-  background: var(--bg);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), var(--gradient);
   box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
   transform: translateX(-100%) rotateY(45deg);
   transform-origin: left center;
@@ -463,8 +496,8 @@ tbody tr:nth-child(even) {
 }
 
 .side-nav.open:hover {
-  transform: translateX(0) rotateY(0deg) translateZ(10px);
-  box-shadow: 6px 0 12px rgba(0, 0, 0, 0.5);
+  transform: translateX(0) rotateY(0deg) translateZ(var(--nav-depth));
+  box-shadow: 6px 0 var(--nav-depth) rgba(0, 0, 0, 0.5);
 }
 
 .side-nav ul {
