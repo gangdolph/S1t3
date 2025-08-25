@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Handle optional image upload
         if (!$error && !empty($_FILES['image']['name'])) {
-            $upload_path = __DIR__ . '/../uploads/';
+            $upload_path = __DIR__ . '/uploads/';
             if (!is_dir($upload_path)) {
                 mkdir($upload_path, 0755, true);
             }
