@@ -27,6 +27,7 @@ $requests = $stmt->fetch_all(MYSQLI_ASSOC);
   <p><a href="listings.php">Review Listings</a></p>
   <p><a href="trade-requests.php">Review Trade Requests</a></p>
   <p><a href="discount-codes.php">Manage Discount Codes</a></p>
+  <p><a href="users.php">Manage Users</a></p>
   <p><a href="theme.php">Vaporwave Theme Settings</a></p>
   <p><a href="../dashboard.php">Back to Dashboard</a></p>
 

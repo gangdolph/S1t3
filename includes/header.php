@@ -64,6 +64,9 @@ if (file_exists($settingsFile)) {
 <?php endif; ?>
     </ul>
   </nav>
+  <form class="site-search" action="/search.php" method="get">
+    <input type="text" name="q" placeholder="Search..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+  </form>
   <button id="theme-toggle">Toggle Theme</button>
 </header>
 <script src="/assets/theme-toggle.js" defer></script>
