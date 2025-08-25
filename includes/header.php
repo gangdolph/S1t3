@@ -64,6 +64,9 @@ if (file_exists($settingsFile)) {
 <?php endif; ?>
     </ul>
   </nav>
+  <?php if (!empty($_SESSION['user_id'])): ?>
+    <?= username_with_avatar($conn, $_SESSION['user_id'], $username) ?>
+  <?php endif; ?>
   <form class="site-search" action="/search.php" method="get">
     <input type="text" name="q" placeholder="Search..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
   </form>
