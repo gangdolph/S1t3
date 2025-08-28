@@ -192,7 +192,6 @@ if ($q !== '') {
 $totalPages = max($totalUserPages, $totalListingPages, $totalTradePages);
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <meta charset="UTF-8">
   <title>Search Results</title>
   <link rel="stylesheet" href="assets/style.css">

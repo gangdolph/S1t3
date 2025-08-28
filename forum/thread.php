@@ -55,7 +55,6 @@ if ($pst = $conn->prepare("SELECT fp.content, fp.created_at, u.id, u.username FR
 }
 ?>
 <?php require '../includes/layout.php'; ?>
-<head>
   <title><?= htmlspecialchars($thread['title']); ?></title>
   <link rel="stylesheet" href="/assets/style.css">
 </head>

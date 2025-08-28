@@ -43,7 +43,6 @@ $result = $conn->query('SELECT code, percent_off, expiry, usage_limit FROM disco
 $codes = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 ?>
 <?php require '../includes/layout.php'; ?>
-<head>
   <title>Discount Codes</title>
   <link rel="stylesheet" href="../assets/style.css">
 </head>

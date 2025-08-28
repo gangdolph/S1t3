@@ -18,14 +18,9 @@ if (!$found) {
   exit;
 }
 if ($avatar) {
-  if (strpos($avatar, '/') !== false) {
-    $candidate = $avatar;
-    $fs = $avatar[0] === '/' ? __DIR__ . '/' . ltrim($avatar, '/') : __DIR__ . '/' . $avatar;
-  } else {
-    $candidate = 'assets/avatars/' . $avatar;
-    $fs = __DIR__ . '/assets/avatars/' . $avatar;
-  }
-  $avatar = is_file($fs) ? $candidate : '';
+  $file = basename($avatar);
+  $fs = __DIR__ . '/assets/avatars/' . $file;
+  $avatar = is_file($fs) ? '/assets/avatars/' . $file : '';
 }
 
 $viewer = $_SESSION['user_id'];
@@ -44,7 +39,6 @@ if ($viewer === $target) {
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <title>Profile of <?= htmlspecialchars($username); ?></title>
   <link rel="stylesheet" href="assets/style.css">
 </head>

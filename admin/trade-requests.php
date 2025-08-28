@@ -16,7 +16,6 @@ $stmt = $conn->query("SELECT r.id, u.id AS user_id, u.username, r.make, r.model,
 $requests = $stmt->fetch_all(MYSQLI_ASSOC);
 ?>
 <?php require '../includes/layout.php'; ?>
-<head>
   <title>Trade Requests</title>
   <link rel="stylesheet" href="../assets/style.css">
 </head>

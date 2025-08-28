@@ -50,7 +50,6 @@ if ($stmt) {
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <title>Friend Requests</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>

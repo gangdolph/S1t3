@@ -42,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <?php require '../includes/layout.php'; ?>
-<head>
   <title>Forum Threads</title>
   <link rel="stylesheet" href="/assets/style.css">
 </head>

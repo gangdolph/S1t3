@@ -1,6 +1,5 @@
 <?php session_start(); ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <meta charset="UTF-8">
   <title>SkuzE | Electronics Repair & Modding</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

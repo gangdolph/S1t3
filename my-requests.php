@@ -18,7 +18,6 @@ if ($stmt === false) {
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <title>My Service Requests</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
