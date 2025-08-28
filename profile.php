@@ -12,6 +12,10 @@ $secretDisplay = '';
 $recoveryDisplay = '';
 $avatar = '';
 $isPrivate = 0;
+$accountType = 'standard';
+$companyName = '';
+$companyWebsite = '';
+$companyLogo = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!validate_token($_POST['csrf_token'] ?? '')) {
@@ -131,6 +135,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
       $stmt->close();
     }
+  } elseif (isset($_POST['update_business'])) {
+    $companyName = trim($_POST['company_name'] ?? '');
+    $companyWebsite = trim($_POST['company_website'] ?? '');
+    if ($companyName === '' || !filter_var($companyWebsite, FILTER_VALIDATE_URL)) {
+      $error = "Please provide a valid company name and website.";
+    } else {
+      $logoFilename = $companyLogo ? basename($companyLogo) : '';
+      if (!empty($_FILES['company_logo']['name']) && $_FILES['company_logo']['error'] === UPLOAD_ERR_OK) {
+        $tmp = $_FILES['company_logo']['tmp_name'];
+        $ext = strtolower(pathinfo($_FILES['company_logo']['name'], PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg','jpeg','png','gif'], true)) {
+          $logoDir = __DIR__ . '/assets/logos';
+          if (!is_dir($logoDir)) {
+            mkdir($logoDir, 0777, true);
+          }
+          $newName = $id . '_' . time() . '.' . $ext;
+          $logoPath = $logoDir . '/' . $newName;
+          if (is_uploaded_file($tmp) && move_uploaded_file($tmp, $logoPath)) {
+            $real = realpath($logoPath);
+            $base = realpath($logoDir);
+            if ($real && $base && strpos($real, $base) === 0 && is_file($real)) {
+              $logoFilename = $newName;
+            } else {
+              @unlink($logoPath);
+            }
+          }
+        }
+      }
+      $stmt = $conn->prepare("UPDATE users SET account_type='business', company_name=?, company_website=?, company_logo=? WHERE id=?");
+      if ($stmt) {
+        $stmt->bind_param('sssi', $companyName, $companyWebsite, $logoFilename, $id);
+        if ($stmt->execute()) {
+          $companyLogo = $logoFilename ? '/assets/logos/' . $logoFilename : '';
+          $accountType = 'business';
+          $msg = "Business profile updated.";
+        } else {
+          $error = "Database error.";
+        }
+        $stmt->close();
+      }
+    }
   } elseif (isset($_POST['disable_2fa'])) {
     $stmt = $conn->prepare("DELETE FROM user_2fa WHERE user_id = ?");
     if ($stmt) {
@@ -144,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-$stmt = $conn->prepare("SELECT email, phone, status FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT email, phone, status, account_type, company_name, company_website, company_logo FROM users WHERE id = ?");
 if ($stmt === false) {
   error_log('Prepare failed: ' . $conn->error);
 } else {
@@ -152,8 +197,9 @@ if ($stmt === false) {
   if (!$stmt->execute()) {
     error_log('Execute failed: ' . $stmt->error);
   } else {
-    $stmt->bind_result($email, $phone, $status);
+    $stmt->bind_result($email, $phone, $status, $accountType, $companyName, $companyWebsite, $logoName);
     $stmt->fetch();
+    $companyLogo = $logoName ? '/assets/logos/' . $logoName : '';
   }
   $stmt->close();
 }
@@ -248,6 +294,18 @@ if ($stmt3) {
         <input type="checkbox" name="is_private" value="1" <?= $isPrivate ? 'checked' : ''; ?>> Private Profile
       </label>
       <button type="submit" name="update_profile">Save</button>
+    </form>
+
+    <h3>Business Profile</h3>
+    <?php if ($companyLogo): ?>
+      <img src="<?= htmlspecialchars($companyLogo); ?>" alt="Logo" width="100">
+    <?php endif; ?>
+    <form method="post" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="<?= generate_token(); ?>">
+      <input type="text" name="company_name" placeholder="Company Name" value="<?= htmlspecialchars($companyName); ?>" required>
+      <input type="url" name="company_website" placeholder="Company Website" value="<?= htmlspecialchars($companyWebsite); ?>" required>
+      <input type="file" name="company_logo" accept="image/*">
+      <button type="submit" name="update_business"><?= $accountType === 'business' ? 'Update Business Info' : 'Upgrade to Business'; ?></button>
     </form>
 
   <p><a href="dashboard.php">Back to Dashboard</a></p>

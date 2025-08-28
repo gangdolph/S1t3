@@ -3,6 +3,17 @@ require 'includes/auth.php';
 require 'includes/db.php';
 require 'includes/csrf.php';
 
+$is_vip = false;
+if ($stmt = $conn->prepare('SELECT vip_status, vip_expires_at FROM users WHERE id=?')) {
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $stmt->bind_result($vip, $vip_expires);
+    if ($stmt->fetch()) {
+        $is_vip = $vip && (!$vip_expires || strtotime($vip_expires) > time());
+    }
+    $stmt->close();
+}
+
 $user_id = $_SESSION['user_id'];
 $error = '';
 
@@ -48,9 +59,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!$error) {
-            $stmt = $conn->prepare("INSERT INTO listings (owner_id, title, description, price, category, image) VALUES (?,?,?,?,?,?)");
+            $status = $is_vip ? 'approved' : 'pending';
+            $stmt = $conn->prepare("INSERT INTO listings (owner_id, title, description, price, category, image, status) VALUES (?,?,?,?,?,?,?)");
             if ($stmt) {
-                $stmt->bind_param('isssss', $user_id, $title, $description, $price, $category, $imageName);
+                $stmt->bind_param('issssss', $user_id, $title, $description, $price, $category, $imageName, $status);
                 $stmt->execute();
                 $stmt->close();
                 header('Location: my-listings.php');
@@ -71,6 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2>Create a Listing</h2>
+  <?php if ($is_vip): ?>
+    <p class="notice">Your listing will be auto-approved as a VIP member.</p>
+  <?php endif; ?>
   <?php if ($error): ?>
     <p class="error"><?= htmlspecialchars($error) ?></p>
   <?php endif; ?>

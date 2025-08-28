@@ -4,6 +4,16 @@ require 'includes/db.php';
 require 'includes/csrf.php';
 
 $user_id = $_SESSION['user_id'];
+$is_vip = false;
+if ($stmtVip = $conn->prepare('SELECT vip_status, vip_expires_at FROM users WHERE id=?')) {
+  $stmtVip->bind_param('i', $user_id);
+  $stmtVip->execute();
+  $stmtVip->bind_result($vipStatus, $vipExpires);
+  if ($stmtVip->fetch()) {
+    $is_vip = $vipStatus && (!$vipExpires || strtotime($vipExpires) > time());
+  }
+  $stmtVip->close();
+}
 $edit_id = isset($_GET['edit']) ? (int)$_GET['edit'] : 0;
 $editing = false;
 $request = null;
@@ -52,6 +62,10 @@ if ($stmt) {
 <body>
   <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
+
+  <?php if ($is_vip): ?>
+    <p class="notice">VIP members skip admin approval for trade requests.</p>
+  <?php endif; ?>
 
   <?php if ($db_error): ?>
     <p class="error"><?= htmlspecialchars($db_error) ?></p>
