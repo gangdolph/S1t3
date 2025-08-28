@@ -22,6 +22,14 @@ if (!empty($_SESSION['user_id'])) {
       $_SESSION['status'] = $status;
     }
   }
+  $unread_messages = 0;
+  if ($stmt = $conn->prepare('SELECT COUNT(*) FROM messages WHERE recipient_id = ? AND read_at IS NULL')) {
+    $stmt->bind_param('i', $_SESSION['user_id']);
+    $stmt->execute();
+    $stmt->bind_result($unread_messages);
+    $stmt->fetch();
+    $stmt->close();
+  }
 }
 
 $defaults = [
@@ -68,6 +76,7 @@ if (file_exists($settingsFile)) {
       <li><a href="/register.php">Register</a></li>
 <?php else: ?>
       <li><a href="/dashboard.php">Dashboard</a></li>
+      <li><a href="/messages.php">Messages<?php if (!empty($unread_messages)): ?><span class="badge"><?= $unread_messages ?></span><?php endif; ?></a></li>
       <li><a href="/logout.php">Logout</a></li>
 <?php endif; ?>
     </ul>
@@ -78,6 +87,21 @@ if (file_exists($settingsFile)) {
   <form class="site-search" action="/search.php" method="get">
     <input type="text" name="q" placeholder="Search..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
   </form>
-  <button id="theme-toggle">Toggle Theme</button>
+  <button id="theme-toggle" type="button" aria-haspopup="dialog" aria-controls="theme-modal">Themes</button>
 </header>
+<div id="theme-modal" class="theme-modal" role="dialog" aria-modal="true" hidden tabindex="-1">
+  <div class="modal-content">
+    <h2>Select Theme</h2>
+    <div class="theme-options">
+      <button type="button" class="btn" data-theme="light">Light</button>
+      <button type="button" class="btn" data-theme="dark">Dark</button>
+      <button type="button" class="btn" data-theme="vaporwave">Vaporwave</button>
+    </div>
+    <div id="theme-preview" class="theme-preview">
+      <p>Sample text</p>
+      <button type="button" class="btn">Sample Button</button>
+    </div>
+    <button id="theme-close" type="button" class="btn">Close</button>
+  </div>
+</div>
 <script src="/assets/theme-toggle.js" defer></script>

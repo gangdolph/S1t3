@@ -1,5 +1,5 @@
 <?php
-require 'includes/auth.php';
+session_start();
 require 'includes/db.php';
 
 $search = trim($_GET['search'] ?? '');
@@ -76,7 +76,8 @@ $stmt->close();
         <ul>
         <?php foreach ($listings as $l): ?>
           <li class="listing">
-            <a href="checkout.php?listing_id=<?= $l['id']; ?>" class="listing-link">
+            <?php $link = isset($_SESSION['user_id']) ? "checkout.php?listing_id={$l['id']}" : 'login.php'; ?>
+            <a href="<?= $link ?>" class="listing-link">
               <h3><?= htmlspecialchars($l['title']) ?></h3>
               <p>Price: $<?= htmlspecialchars($l['price']) ?></p>
               <p>Category: <?= htmlspecialchars($l['category']) ?></p>
