@@ -1,5 +1,6 @@
 <?php
 require 'includes/auth.php';
+require 'includes/csrf.php';
 
 $target = (int)($_GET['id'] ?? 0);
 if (!$target) {
@@ -44,6 +45,47 @@ if ($viewer === $target) {
     $stmt2->close();
   }
 }
+
+$requestStatus = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_friend']) && $viewer !== $target) {
+  if (!validate_token($_POST['csrf_token'] ?? '')) {
+    $requestStatus = 'Invalid CSRF token.';
+  } else {
+    $stmt = $conn->prepare("INSERT INTO friends (user_id, friend_id, status) VALUES (?, ?, 'pending') ON DUPLICATE KEY UPDATE status='pending'");
+    if ($stmt) {
+      $stmt->bind_param('ii', $viewer, $target);
+      $stmt->execute();
+      $stmt->close();
+      $requestStatus = 'Request sent';
+    }
+  }
+}
+
+$outgoingStatus = null;
+$incomingStatus = null;
+if ($viewer !== $target) {
+  $stmt = $conn->prepare("SELECT status FROM friends WHERE user_id=? AND friend_id=?");
+  if ($stmt) {
+    $stmt->bind_param('ii', $viewer, $target);
+    $stmt->execute();
+    $stmt->bind_result($outgoingStatus);
+    $stmt->fetch();
+    $stmt->close();
+  }
+  $stmt = $conn->prepare("SELECT status FROM friends WHERE user_id=? AND friend_id=?");
+  if ($stmt) {
+    $stmt->bind_param('ii', $target, $viewer);
+    $stmt->execute();
+    $stmt->bind_result($incomingStatus);
+    $stmt->fetch();
+    $stmt->close();
+  }
+  if ($requestStatus === '' && $outgoingStatus === 'pending') {
+    $requestStatus = 'Request sent';
+  } elseif ($requestStatus === '' && $incomingStatus === 'pending') {
+    $requestStatus = 'Pending';
+  }
+}
 ?>
 <?php require 'includes/layout.php'; ?>
   <title>Profile of <?= htmlspecialchars($username); ?></title>
@@ -53,6 +95,16 @@ if ($viewer === $target) {
   <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
   <h2><?= htmlspecialchars($username); ?><?php if ($vipActive) echo ' <span class="vip-badge">VIP</span>'; ?></h2>
+  <?php if ($viewer !== $target): ?>
+    <?php if ($requestStatus !== ''): ?>
+      <p><?= htmlspecialchars($requestStatus); ?></p>
+    <?php elseif ($outgoingStatus !== 'pending' && $incomingStatus !== 'pending' && !$isFriend): ?>
+      <form method="post">
+        <input type="hidden" name="csrf_token" value="<?= generate_token(); ?>">
+        <button type="submit" name="add_friend">Add Friend</button>
+      </form>
+    <?php endif; ?>
+  <?php endif; ?>
   <?php if ($isPrivate && !$isFriend): ?>
     <p>This profile is private.</p>
   <?php else: ?>

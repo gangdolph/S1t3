@@ -20,6 +20,14 @@ if ($stmt === false) {
   }
 }
 $vip_active = $vip && (!$vip_expires || strtotime($vip_expires) > time());
+$unread_messages = 0;
+if ($stmt = $conn->prepare('SELECT COUNT(*) FROM messages WHERE recipient_id = ? AND read_at IS NULL')) {
+  $stmt->bind_param('i', $id);
+  $stmt->execute();
+  $stmt->bind_result($unread_messages);
+  $stmt->fetch();
+  $stmt->close();
+}
 ?>
 <?php require 'includes/layout.php'; ?>
   <title>Dashboard</title>
@@ -38,14 +46,15 @@ $vip_active = $vip && (!$vip_expires || strtotime($vip_expires) > time());
   <?php elseif ($vip): ?>
     <p class="notice">Your VIP membership expired on <?= htmlspecialchars($vip_expires) ?>. <a href="vip.php">Renew now</a>.</p>
   <?php endif; ?>
-  <p><a href="services.php">Start a Service Request</a></p>
-  <p><a href="my-requests.php">View My Service Requests</a></p>
-  <p><a href="my-listings.php">Manage My Listings</a></p>
+  <p><a class="btn" role="button" href="services.php">Start a Service Request</a></p>
+  <p><a class="btn" role="button" href="my-requests.php">View My Service Requests</a></p>
+  <p><a class="btn" role="button" href="my-listings.php">Manage My Listings</a></p>
+  <p><a class="btn" role="button" href="messages.php">Messages<?php if (!empty($unread_messages)): ?> <span class="badge"><?= $unread_messages ?></span><?php endif; ?></a></p>
   <?php if (!empty($_SESSION['is_admin'])): ?>
-    <p><a href="/admin/index.php">Admin Panel</a></p>
+    <p><a class="btn" role="button" href="/admin/index.php">Admin Panel</a></p>
   <?php endif; ?>
-  <p><a href="profile.php">Edit Profile</a></p>
-  <p><a href="logout.php">Logout</a></p>
+  <p><a class="btn" role="button" href="profile.php">Edit Profile</a></p>
+  <p><a class="btn" role="button" href="logout.php">Logout</a></p>
   <?php include 'includes/footer.php'; ?>
 </body>
 </html>

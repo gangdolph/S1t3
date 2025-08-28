@@ -1,11 +1,11 @@
 <?php
-require 'includes/auth.php';
+session_start();
 require 'includes/db.php';
 require 'includes/user.php';
 
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id'] ?? null;
 
-if (isset($_GET['delete'])) {
+if (isset($_GET['delete']) && $user_id) {
     $id = intval($_GET['delete']);
     if ($stmt = $conn->prepare('DELETE FROM trade_listings WHERE id = ? AND owner_id = ?')) {
         $stmt->bind_param('ii', $id, $user_id);
@@ -48,7 +48,7 @@ if ($result = $conn->query($sql)) {
             <a href="trade-listing.php?edit=<?= $l['id'] ?>">Edit</a>
             <a href="trade-listings.php?delete=<?= $l['id'] ?>" onclick="return confirm('Delete listing?');">Delete</a>
             <a href="trade-offers.php?listing=<?= $l['id'] ?>">Offers (<?= $l['pending'] ?>)</a>
-          <?php elseif ($l['status'] === 'open'): ?>
+          <?php elseif ($l['status'] === 'open' && $user_id): ?>
             <a href="trade-offer.php?id=<?= $l['id'] ?>">Make Offer</a>
           <?php endif; ?>
         </td>
