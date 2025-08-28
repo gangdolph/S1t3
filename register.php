@@ -6,6 +6,9 @@ require 'mail.php';
 
 $user = '';
 $email = '';
+$isBusiness = false;
+$company = '';
+$website = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!validate_token($_POST['csrf_token'] ?? '')) {
@@ -14,12 +17,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = trim($_POST['username']);
     $email = trim($_POST['email']);
     $pass = $_POST['password'];
-
+    $isBusiness = isset($_POST['is_business']);
+    $company = trim($_POST['company_name'] ?? '');
+    $website = trim($_POST['company_website'] ?? '');
+    
   if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $error = "Please enter a valid email address.";
   } elseif (strlen($user) < 3 || strlen($pass) < 6) {
     $error = "Username must be 3+ chars and password 6+.";
-    } else {
+  } elseif ($isBusiness && ($company === '' || !filter_var($website, FILTER_VALIDATE_URL))) {
+    $error = "Please provide a valid company name and website.";
+  } else {
     $stmt = $conn->prepare("SELECT id FROM users WHERE username=? OR email=?");
     if ($stmt === false) {
       error_log('Prepare failed: ' . $conn->error);
@@ -39,13 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
           $hash = password_hash($pass, PASSWORD_DEFAULT);
           $status = 'offline';
+          $accountType = $isBusiness ? 'business' : 'standard';
           $stmt->close();
-          $stmt = $conn->prepare("INSERT INTO users (username, email, password, status) VALUES (?, ?, ?, ?)");
+          $stmt = $conn->prepare("INSERT INTO users (username, email, password, status, account_type, company_name, company_website) VALUES (?, ?, ?, ?, ?, ?, ?)");
           if ($stmt === false) {
             error_log('Prepare failed: ' . $conn->error);
             $error = "Registration failed. Please try again.";
           } else {
-            $stmt->bind_param("ssss", $user, $email, $hash, $status);
+            $stmt->bind_param("sssssss", $user, $email, $hash, $status, $accountType, $company, $website);
             if (!$stmt->execute()) {
               error_log('Execute failed: ' . $stmt->error);
               $error = "Registration failed. Please try again.";
@@ -105,8 +114,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="text" name="username" required placeholder="Username" value="<?= htmlspecialchars($user, ENT_QUOTES, 'UTF-8'); ?>">
       <input type="email" name="email" required placeholder="Email" value="<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>">
       <input type="password" name="password" required placeholder="Password">
+      <label><input type="checkbox" name="is_business" id="is_business" <?= $isBusiness ? 'checked' : ''; ?>> Register as Business</label>
+      <div id="business_fields" style="<?= $isBusiness ? '' : 'display:none;'; ?>">
+        <input type="text" name="company_name" placeholder="Company Name" value="<?= htmlspecialchars($company, ENT_QUOTES, 'UTF-8'); ?>">
+        <input type="url" name="company_website" placeholder="Company Website" value="<?= htmlspecialchars($website, ENT_QUOTES, 'UTF-8'); ?>">
+      </div>
       <button type="submit">Register</button>
     </form>
+    <script>
+      document.getElementById('is_business').addEventListener('change', function() {
+        document.getElementById('business_fields').style.display = this.checked ? '' : 'none';
+      });
+    </script>
   <?php include 'includes/footer.php'; ?>
 </body>
 </html>

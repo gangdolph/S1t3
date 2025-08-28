@@ -9,11 +9,22 @@ $error = '';
 $filename = null;
 $type = htmlspecialchars(trim($_POST['type'] ?? 'service'), ENT_QUOTES, 'UTF-8');
 
+$user_id = $_SESSION['user_id'];
+$is_vip = false;
+if ($stmtVip = $conn->prepare('SELECT vip_status, vip_expires_at FROM users WHERE id=?')) {
+    $stmtVip->bind_param('i', $user_id);
+    $stmtVip->execute();
+    $stmtVip->bind_result($vipStatus, $vipExpires);
+    if ($stmtVip->fetch()) {
+        $is_vip = $vipStatus && (!$vipExpires || strtotime($vipExpires) > time());
+    }
+    $stmtVip->close();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validate_token($_POST['csrf_token'] ?? '')) {
         $error = 'Invalid CSRF token.';
     } else {
-        $user_id = $_SESSION['user_id'];
         $category = htmlspecialchars(trim($_POST['category'] ?? ''), ENT_QUOTES, 'UTF-8');
         $make = isset($_POST['make']) ? htmlspecialchars(trim($_POST['make']), ENT_QUOTES, 'UTF-8') : null;
         $model = isset($_POST['model']) ? htmlspecialchars(trim($_POST['model']), ENT_QUOTES, 'UTF-8') : null;
@@ -56,12 +67,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Proceed if no file errors
         if (!$error) {
+          $status = $is_vip ? 'In Progress' : 'New';
           $stmt = $conn->prepare("INSERT INTO service_requests
-            (user_id, type, category, make, model, serial, issue, build, device_type, photo)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            (user_id, type, category, make, model, serial, issue, build, device_type, photo, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
           if ($stmt) {
-            $stmt->bind_param("isssssssss", $user_id, $type, $category, $make, $model, $serial, $issue, $build, $device_type, $filename);
+            $stmt->bind_param("issssssssss", $user_id, $type, $category, $make, $model, $serial, $issue, $build, $device_type, $filename, $status);
             if ($stmt->execute()) {
               $success = true;
 

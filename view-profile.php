@@ -7,12 +7,13 @@ if (!$target) {
   exit;
 }
 
-$stmt = $conn->prepare("SELECT u.username, p.avatar_path, p.is_private FROM users u LEFT JOIN profiles p ON u.id = p.user_id WHERE u.id = ?");
+$stmt = $conn->prepare("SELECT u.username, p.avatar_path, p.is_private, u.account_type, u.company_name, u.company_website, u.company_logo, u.vip_status, u.vip_expires_at FROM users u LEFT JOIN profiles p ON u.id = p.user_id WHERE u.id = ?");
 $stmt->bind_param('i', $target);
 $stmt->execute();
-$stmt->bind_result($username, $avatar, $isPrivate);
+$stmt->bind_result($username, $avatar, $isPrivate, $accountType, $companyName, $companyWebsite, $logoName, $vipStatus, $vipExpires);
 $found = $stmt->fetch();
 $stmt->close();
+$vipActive = $vipStatus && (!$vipExpires || strtotime($vipExpires) > time());
 if (!$found) {
   echo 'User not found.';
   exit;
@@ -21,6 +22,12 @@ if ($avatar) {
   $file = basename($avatar);
   $fs = __DIR__ . '/assets/avatars/' . $file;
   $avatar = is_file($fs) ? '/assets/avatars/' . $file : '';
+}
+$companyLogo = '';
+if ($logoName) {
+  $lf = basename($logoName);
+  $ls = __DIR__ . '/assets/logos/' . $lf;
+  $companyLogo = is_file($ls) ? '/assets/logos/' . $lf : '';
 }
 
 $viewer = $_SESSION['user_id'];
@@ -45,12 +52,21 @@ if ($viewer === $target) {
 <body>
   <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
-  <h2><?= htmlspecialchars($username); ?></h2>
+  <h2><?= htmlspecialchars($username); ?><?php if ($vipActive) echo ' <span class="vip-badge">VIP</span>'; ?></h2>
   <?php if ($isPrivate && !$isFriend): ?>
     <p>This profile is private.</p>
   <?php else: ?>
     <?php if ($avatar): ?>
       <img src="<?= htmlspecialchars($avatar); ?>" alt="Avatar" width="100">
+    <?php endif; ?>
+    <?php if ($accountType === 'business'): ?>
+      <h3><?= htmlspecialchars($companyName); ?></h3>
+      <?php if ($companyLogo): ?>
+        <img src="<?= htmlspecialchars($companyLogo); ?>" alt="Logo" width="100">
+      <?php endif; ?>
+      <?php if ($companyWebsite): ?>
+        <p><a href="<?= htmlspecialchars($companyWebsite); ?>" target="_blank">Visit Website</a></p>
+      <?php endif; ?>
     <?php endif; ?>
   <?php endif; ?>
   <?php include 'includes/footer.php'; ?>
