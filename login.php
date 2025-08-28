@@ -160,7 +160,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <title>Login</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>

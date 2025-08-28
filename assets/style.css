@@ -13,6 +13,7 @@
   --header-texture: none;
   --footer-texture: none;
   --btn-depth: 6px;
+  --cta-depth: 20px;
 }
 
 [data-theme='dark'] {
@@ -100,6 +101,8 @@ body {
   padding: 2rem 1rem;
   gap: 2rem;
   position: relative;
+  margin: 0 auto;
+  max-width: 1200px;
 }
 
 
@@ -131,7 +134,7 @@ body {
   gap: 1rem;
   width: 100%;
   max-width: 600px;
-  margin-top: 2rem;
+  margin: 2rem auto 0;
   align-items: center;
   justify-content: center;
 }
@@ -147,23 +150,23 @@ body {
 }
 
 .btn-cta {
-  background: linear-gradient(135deg, var(--accent), var(--vap2));
-  background-size: 200% 200%;
+  background: linear-gradient(45deg, var(--accent), var(--vap2), var(--vap3));
+  background-size: 300% 300%;
   color: #fff;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
-  animation: ctaFlow 6s ease infinite;
-  transition: transform 0.2s, box-shadow 0.2s, background-position 0.5s, opacity 0.2s;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  animation: ctaFlow 8s ease infinite, ctaPulse 2s ease-in-out infinite;
+  transition: transform 0.3s, box-shadow 0.3s, background-position 0.5s, opacity 0.3s;
 }
 
 .btn-cta:hover {
-  opacity: 0.9;
-  transform: perspective(400px) translateZ(var(--btn-depth));
-  box-shadow: 0 var(--btn-depth) var(--btn-depth) rgba(0, 0, 0, 0.4);
+  opacity: 0.95;
+  transform: perspective(400px) translateZ(var(--cta-depth));
+  box-shadow: 0 var(--cta-depth) var(--cta-depth) rgba(0, 0, 0, 0.4);
 }
 
 .btn-cta:active {
-  transform: perspective(400px) translateZ(calc(var(--btn-depth) / 3));
-  box-shadow: inset 0 calc(var(--btn-depth) / 3) 0 rgba(0, 0, 0, 0.4);
+  transform: perspective(400px) translateZ(calc(var(--cta-depth) / 3));
+  box-shadow: inset 0 calc(var(--cta-depth) / 3) 0 rgba(0, 0, 0, 0.4);
 }
 
 @keyframes ctaFlow {
@@ -172,9 +175,13 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+@keyframes ctaPulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.2); }
+}
+
 @media (min-width: 768px) {
   .hero {
-    flex-direction: row;
     padding: 3rem 2rem;
   }
 
@@ -280,21 +287,22 @@ footer:hover {
   display: block;
   padding: 0.5rem 0.75rem;
   border-radius: 3px;
-  background: #333;
+  background: #2b2b2b;
+  color: #ccc;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
   transform: perspective(300px) translateZ(0);
   transition: background 0.2s, transform 0.1s, box-shadow 0.1s;
 }
 
 .site-nav a:hover {
-  background: #444;
+  background: #3c3c3c;
   color: #fff;
   transform: perspective(300px) translateZ(6px);
   box-shadow: 0 6px 6px rgba(0, 0, 0, 0.4);
 }
 
 .site-nav a:active {
-  background: #555;
+  background: #444;
   transform: perspective(300px) translateZ(2px);
   box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.4);
 }

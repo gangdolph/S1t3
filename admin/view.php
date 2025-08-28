@@ -59,7 +59,6 @@ $online_status = $is_online ? "<span style='color:green;'>Online</span>" : "<spa
   }
 ?>
 <?php require '../includes/layout.php'; ?>
-<head>
   <title>View Request</title>
   <link rel="stylesheet" href="../assets/style.css">
 </head>

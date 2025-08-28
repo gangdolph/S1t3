@@ -63,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <meta charset="UTF-8">
   <title>Create Listing</title>
   <link rel="stylesheet" href="assets/style.css">

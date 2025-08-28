@@ -19,7 +19,6 @@ if ($stmt === false) {
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <title>Dashboard</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>

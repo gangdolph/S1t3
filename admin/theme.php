@@ -40,7 +40,6 @@ if (file_exists($settingsFile)) {
 }
 ?>
 <?php require '../includes/layout.php'; ?>
-<head>
   <title>Vaporwave Theme Settings</title>
   <link rel="stylesheet" href="../assets/style.css">
 </head>

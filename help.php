@@ -1,6 +1,5 @@
 <?php session_start(); ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <meta charset="UTF-8">
   <title>Help & FAQ</title>
   <link rel="stylesheet" href="assets/style.css">

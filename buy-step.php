@@ -10,7 +10,6 @@ function label($text, $name, $type = 'text', $required = true) {
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <title>Buy Details</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>

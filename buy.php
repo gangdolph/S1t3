@@ -49,7 +49,6 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <meta charset="UTF-8">
   <title>Buy from SkuzE</title>
   <link rel="stylesheet" href="assets/style.css">

@@ -24,7 +24,6 @@ $listings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <title>My Listings</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>

@@ -101,13 +101,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $tmp = $_FILES['avatar']['tmp_name'];
       $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
       if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif'], true)) {
-        if (!is_dir('assets/avatars')) {
-          mkdir('assets/avatars', 0777, true);
+        $avatarDir = __DIR__ . '/assets/avatars';
+        if (!is_dir($avatarDir)) {
+          mkdir($avatarDir, 0777, true);
         }
         $newName = $id . '_' . time() . '.' . $ext;
-        $avatarPath = 'assets/avatars/' . $newName;
-        if (is_uploaded_file($tmp) && move_uploaded_file($tmp, $avatarPath) && is_file($avatarPath)) {
-          $avatarFilename = $newName;
+        $avatarPath = $avatarDir . '/' . $newName;
+        if (is_uploaded_file($tmp) && move_uploaded_file($tmp, $avatarPath)) {
+          $real = realpath($avatarPath);
+          $base = realpath($avatarDir);
+          if ($real && $base && strpos($real, $base) === 0 && is_file($real)) {
+            $avatarFilename = $newName;
+          } else {
+            @unlink($avatarPath);
+          }
         }
       }
     }
@@ -115,8 +122,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt) {
       $stmt->bind_param('isi', $id, $avatarFilename, $isPrivate);
       if ($stmt->execute()) {
-        $candidate = $avatarFilename ? 'assets/avatars/' . $avatarFilename : '';
-        $avatar = $candidate && is_file($candidate) ? $candidate : '';
+        $candidate = $avatarFilename ? '/assets/avatars/' . $avatarFilename : '';
+        $fileCheck = __DIR__ . '/assets/avatars/' . $avatarFilename;
+        $avatar = $candidate && is_file($fileCheck) ? $candidate : '';
         $msg = "Profile settings updated.";
       } else {
         $error = "Database error.";
@@ -170,14 +178,9 @@ if ($stmt3) {
   if ($stmt3->execute()) {
     $stmt3->bind_result($avatarName, $isPrivate);
     if ($stmt3->fetch() && $avatarName) {
-      if (strpos($avatarName, '/') !== false) {
-        $candidate = $avatarName;
-        $fs = $avatarName[0] === '/' ? __DIR__ . '/' . ltrim($avatarName, '/') : __DIR__ . '/' . $avatarName;
-      } else {
-        $candidate = 'assets/avatars/' . $avatarName;
-        $fs = __DIR__ . '/assets/avatars/' . $avatarName;
-      }
-      $avatar = is_file($fs) ? $candidate : '';
+      $file = basename($avatarName);
+      $fs = __DIR__ . '/assets/avatars/' . $file;
+      $avatar = is_file($fs) ? '/assets/avatars/' . $file : '';
     } else {
       $avatar = '';
     }
@@ -186,7 +189,6 @@ if ($stmt3) {
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head>
   <title>Edit Profile</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>

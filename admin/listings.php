@@ -37,7 +37,6 @@ $result = $conn->query("SELECT l.id, l.title, l.price, l.status, u.id AS user_id
 $listings = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 ?>
 <?php require '../includes/layout.php'; ?>
-<head>
   <title>Review Listings</title>
   <link rel="stylesheet" href="../assets/style.css">
 </head>

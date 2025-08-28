@@ -63,7 +63,6 @@ require 'mail.php';
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head><title>Forgot Password</title></head>
 <body>
   <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>

@@ -84,7 +84,6 @@ if ($token) {
 }
 ?>
 <?php require 'includes/layout.php'; ?>
-<head><title>Reset Password</title></head>
 <body>
   <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
