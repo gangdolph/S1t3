@@ -10,3 +10,4 @@
   tracking of failed login attempts by IP, enforcing rate limits across sessions.
 - Run migration `migrations/013_create_service_requests.sql` in all environments to create the `service_requests` table,
   which stores device service requests.
+- Ensure `assets/themes.json` is deployed and readable by the web server so the client can load theme definitions.

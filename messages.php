@@ -32,7 +32,7 @@ $stmt->close();
     <ul class="conversation-list">
       <?php foreach ($conversations as $c): ?>
         <li>
-          <a href="message-thread.php?user=<?= $c['other_id'] ?>">
+          <a class="btn" href="message-thread.php?user=<?= $c['other_id'] ?>">
             <?= htmlspecialchars($c['username']) ?>
             <?php if ($c['unread'] > 0): ?>
               <span class="badge"><?= $c['unread'] ?></span>

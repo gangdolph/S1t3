@@ -63,13 +63,13 @@ if ($pst = $conn->prepare("SELECT fp.id, fp.parent_id, fp.content, fp.created_at
   $pst->close();
 }
 
-function render_posts($parent_id = 0) {
+function render_posts($parent_id = 0, $depth = 0) {
   global $posts_by_parent, $conn, $thread_id;
   if (empty($posts_by_parent[$parent_id])) {
     return;
   }
   foreach ($posts_by_parent[$parent_id] as $post) {
-    echo '<div class="post">';
+    echo '<div class="post level-' . $depth . '">';
     echo '<strong>' . username_with_avatar($conn, $post['user_id'], $post['username']) . '</strong> on ' . htmlspecialchars($post['created_at']);
     echo '<p>' . nl2br(htmlspecialchars($post['content'])) . '</p>';
     echo '<form method="get" action="thread.php#reply-form" class="inline-reply">';
@@ -77,7 +77,11 @@ function render_posts($parent_id = 0) {
     echo '<input type="hidden" name="reply_to" value="' . $post['id'] . '">';
     echo '<button type="submit" aria-label="Reply to this post">Reply</button>';
     echo '</form>';
-    render_posts($post['id']);
+    if (!empty($posts_by_parent[$post['id']])) {
+      echo '<div class="post-children">';
+      render_posts($post['id'], $depth + 1);
+      echo '</div>';
+    }
     echo '</div>';
   }
 }

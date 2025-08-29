@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </tr>
     </tbody>
   </table>
-  <p><a href="../toolbox.php">View Toolbox</a></p>
+  <p><a class="btn" href="../toolbox.php">View Toolbox</a></p>
   <?php include '../includes/footer.php'; ?>
 </body>
 </html>
