@@ -90,7 +90,7 @@ if ($stmt) {
     </label><br>
     <button type="submit">Save</button>
   </form>
-  <p><a href="users.php">Back to Users</a></p>
+  <p><a class="btn" href="users.php">Back to Users</a></p>
   <?php include '../includes/footer.php'; ?>
 </body>
 </html>

@@ -22,7 +22,7 @@ $requests = $stmt->fetch_all(MYSQLI_ASSOC);
 <body>
   <?php include '../includes/header.php'; ?>
   <h2>Trade Requests</h2>
-  <p><a href="index.php">Back to Admin Panel</a></p>
+  <p><a class="btn" href="index.php">Back to Admin Panel</a></p>
   <table>
     <thead>
       <tr>

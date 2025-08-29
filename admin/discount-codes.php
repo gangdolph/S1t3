@@ -50,7 +50,7 @@ $codes = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
   <?php include '../includes/header.php'; ?>
   <h2>Discount Codes</h2>
   <?php if (!empty($error)) echo "<p style='color:red;'>" . htmlspecialchars($error) . "</p>"; ?>
-  <p><a href="index.php">Back to Admin Panel</a></p>
+  <p><a class="btn" href="index.php">Back to Admin Panel</a></p>
   <form method="post">
     <input type="hidden" name="csrf_token" value="<?= generate_token(); ?>">
     <h3>Create Code</h3>

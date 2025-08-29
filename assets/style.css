@@ -292,6 +292,7 @@ footer:hover {
   perspective: 500px;
   transform: perspective(500px) translateZ(0);
   transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: uppercase;
 }
 
 .site-header::before {
@@ -308,6 +309,24 @@ footer:hover {
 .site-header:hover {
   transform: perspective(500px) translateZ(var(--header-depth));
   box-shadow: 0 4px var(--header-depth) rgba(0, 0, 0, 0.6), 0 -4px var(--header-depth) rgba(255, 255, 255, 0.2);
+}
+
+.header-left,
+.header-center,
+.header-right {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left,
+.header-right {
+  flex: 1;
+}
+
+.header-center {
+  flex: 1;
+  justify-content: center;
 }
 
 .logo-img {
@@ -334,6 +353,7 @@ footer:hover {
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
   transform: perspective(300px) translateZ(0);
   transition: background 0.2s, transform 0.1s, box-shadow 0.1s;
+  text-transform: uppercase;
 }
 
 .site-nav a:hover {
@@ -347,6 +367,25 @@ footer:hover {
   background: #444;
   transform: perspective(300px) translateZ(2px);
   box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    flex-direction: column;
+  }
+
+  .header-left,
+  .header-center,
+  .header-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header-left ul,
+  .header-right ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 /* Forms and buttons */
@@ -620,6 +659,7 @@ tbody tr:nth-child(even) {
 .side-nav-title {
   margin: 0 1rem 0.5rem;
   font-weight: 600;
+  text-transform: uppercase;
 }
 
 .side-nav ul {
@@ -675,6 +715,11 @@ tbody tr:nth-child(even) {
   margin: 0.5rem 0;
 }
 
+.conversation-list .btn {
+  display: block;
+  width: 100%;
+}
+
 .message-thread {
   margin-bottom: 1rem;
 }
@@ -691,15 +736,33 @@ tbody tr:nth-child(even) {
 
 /* Forum posts */
 .post {
-  border-left: 2px solid var(--accent);
-  padding-left: 10px;
-  margin: 1rem 0;
+  margin-bottom: 0.5rem;
 }
 
-.post .post {
-  margin-left: 20px;
+.post-children {
+  margin-left: 1rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid var(--accent);
 }
 
 .inline-reply {
   margin-top: 0.5rem;
+}
+
+.gradient-presets {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.gradient-preset {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+.gradient-preset.selected {
+  outline: 2px solid var(--accent);
 }

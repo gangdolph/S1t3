@@ -36,14 +36,21 @@ if (!empty($_SESSION['user_id'])) {
   }
 ?>
 <header class="site-header">
-  <a href="/index.php" class="logo-link">
-    <img class="logo-img" src="/assets/logo.png" alt="SkuzE Logo">
-  </a>
-  <nav class="site-nav">
+  <nav class="site-nav header-left">
+    <a href="/index.php" class="logo-link">
+      <img class="logo-img" src="/assets/logo.png" alt="SkuzE Logo">
+    </a>
     <ul>
       <li><a href="/index.php">Home</a></li>
       <li><a href="/about.php">About</a></li>
       <li><a href="/help.php">Help/FAQ</a></li>
+    </ul>
+  </nav>
+  <form class="site-search header-center" action="/search.php" method="get">
+    <input type="text" name="q" placeholder="Search..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+  </form>
+  <nav class="site-nav header-right">
+    <ul>
 <?php if (empty($_SESSION['user_id'])): ?>
       <li><a href="/login.php">Login</a></li>
       <li><a href="/register.php">Register</a></li>
@@ -52,16 +59,11 @@ if (!empty($_SESSION['user_id'])) {
       <li><a href="/notifications.php">Notifications<?php if (!empty($unread_notifications)): ?><span class="badge"><?= $unread_notifications ?></span><?php endif; ?></a></li>
       <li><a href="/messages.php">Messages<?php if (!empty($unread_messages)): ?><span class="badge"><?= $unread_messages ?></span><?php endif; ?></a></li>
       <li><a href="/logout.php">Logout</a></li>
+      <li class="user-info"><?= username_with_avatar($conn, $_SESSION['user_id'], $username) ?></li>
 <?php endif; ?>
+      <li><button id="theme-toggle" type="button" aria-haspopup="dialog" aria-controls="theme-modal">Themes</button></li>
     </ul>
   </nav>
-  <?php if (!empty($_SESSION['user_id'])): ?>
-    <?= username_with_avatar($conn, $_SESSION['user_id'], $username) ?>
-  <?php endif; ?>
-  <form class="site-search" action="/search.php" method="get">
-    <input type="text" name="q" placeholder="Search..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
-  </form>
-  <button id="theme-toggle" type="button" aria-haspopup="dialog" aria-controls="theme-modal">Themes</button>
 </header>
 <div id="theme-modal" class="theme-modal" role="dialog" aria-modal="true" hidden tabindex="-1">
   <div class="modal-content">

@@ -93,7 +93,7 @@ $online_status = $is_online ? "<span style='color:green;'>Online</span>" : "<spa
 
     <button type="submit">Save Changes</button>
   </form>
-  <p><a href="index.php">← Back to All Requests</a></p>
+  <p><a class="btn" href="index.php">← Back to All Requests</a></p>
   <?php include '../includes/footer.php'; ?>
 </body>
 </html>

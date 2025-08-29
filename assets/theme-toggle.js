@@ -42,19 +42,25 @@ function buildOptions() {
 async function initThemes() {
   try {
     const res = await fetch('/assets/themes.json');
-    themes = await res.json();
-    buildOptions();
-    const stored = localStorage.getItem('theme');
-    if (stored && themes[stored]) {
-      applyTheme(stored);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && themes['dark']) {
-      applyTheme('dark');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data && typeof data === 'object' && !Array.isArray(data)) {
+      themes = data;
     } else {
-      const first = Object.keys(themes)[0];
-      if (first) applyTheme(first);
+      throw new Error('Invalid theme JSON');
     }
   } catch (e) {
     console.error('Theme load failed', e);
+  }
+  buildOptions();
+  const stored = localStorage.getItem('theme');
+  if (stored && themes[stored]) {
+    applyTheme(stored);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && themes['dark']) {
+    applyTheme('dark');
+  } else {
+    const first = Object.keys(themes)[0];
+    if (first) applyTheme(first);
   }
 }
 

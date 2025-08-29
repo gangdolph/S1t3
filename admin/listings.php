@@ -44,7 +44,7 @@ $listings = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
   <?php include '../includes/header.php'; ?>
   <h2>Listings Review</h2>
   <?php if (!empty($error)) echo "<p style='color:red;'>" . htmlspecialchars($error) . "</p>"; ?>
-  <p><a href="index.php">Back to Admin Panel</a></p>
+  <p><a class="btn" href="index.php">Back to Admin Panel</a></p>
   <table>
     <tr><th>ID</th><th>User</th><th>Title</th><th>Price</th><th>Status</th><th>Actions</th></tr>
     <?php foreach ($listings as $l): ?>
