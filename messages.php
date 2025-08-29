@@ -25,7 +25,7 @@ $stmt->close();
 <body>
   <?php include 'includes/sidebar.php'; ?>
   <?php include 'includes/header.php'; ?>
-  <h2>Messages</h2>
+  <h2>Messages <a class="btn" role="button" href="compose-message.php" aria-label="Compose new message" title="Compose new message">+</a></h2>
   <?php if (empty($conversations)): ?>
     <p>No conversations yet.</p>
   <?php else: ?>

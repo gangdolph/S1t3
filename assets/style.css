@@ -10,8 +10,10 @@
   --header-depth: 10px;
   --nav-depth: 12px;
   --footer-depth: 10px;
-  --header-texture: none;
-  --footer-texture: none;
+  --header-pattern: none;
+  --footer-pattern: none;
+  --pattern-hue: 0deg;
+  --pattern-sat: 100%;
   --btn-depth: 6px;
   --cta-depth: 20px;
 }
@@ -219,14 +221,26 @@ body {
 }
 
 footer {
+  position: relative;
   margin-top: 3rem;
   text-align: center;
   font-size: 0.9rem;
-  background: var(--footer-texture), linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), var(--gradient);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), var(--gradient);
   padding: 1rem 0;
   box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.5), 0 2px 3px rgba(255, 255, 255, 0.1);
   transform: perspective(500px) translateZ(0);
   transition: transform 0.2s, box-shadow 0.2s;
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--footer-pattern);
+  background-size: cover;
+  filter: hue-rotate(var(--pattern-hue)) saturate(var(--pattern-sat));
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 footer:hover {
@@ -266,17 +280,29 @@ footer:hover {
 /* Navigation */
 
 .site-header {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: var(--header-texture), linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)), var(--gradient);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)), var(--gradient);
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5), 0 -2px 3px rgba(255, 255, 255, 0.1);
   perspective: 500px;
   transform: perspective(500px) translateZ(0);
   transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--header-pattern);
+  background-size: cover;
+  filter: hue-rotate(var(--pattern-hue)) saturate(var(--pattern-sat));
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .site-header:hover {
@@ -661,4 +687,19 @@ tbody tr:nth-child(even) {
   width: 100%;
   height: 80px;
   margin-bottom: 0.5rem;
+}
+
+/* Forum posts */
+.post {
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+  margin: 1rem 0;
+}
+
+.post .post {
+  margin-left: 20px;
+}
+
+.inline-reply {
+  margin-top: 0.5rem;
 }

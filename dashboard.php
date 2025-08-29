@@ -1,6 +1,7 @@
 <?php
 require 'includes/auth.php';
 require 'includes/db.php';
+require 'includes/notifications.php';
 
 $id = $_SESSION['user_id'];
 $username = '';
@@ -28,6 +29,7 @@ if ($stmt = $conn->prepare('SELECT COUNT(*) FROM messages WHERE recipient_id = ?
   $stmt->fetch();
   $stmt->close();
 }
+$unread_notifications = count_unread_notifications($conn, $id);
 ?>
 <?php require 'includes/layout.php'; ?>
   <title>Dashboard</title>
@@ -49,6 +51,7 @@ if ($stmt = $conn->prepare('SELECT COUNT(*) FROM messages WHERE recipient_id = ?
   <p><a class="btn" role="button" href="services.php">Start a Service Request</a></p>
   <p><a class="btn" role="button" href="my-requests.php">View My Service Requests</a></p>
   <p><a class="btn" role="button" href="my-listings.php">Manage My Listings</a></p>
+  <p><a class="btn" role="button" href="notifications.php">Notifications<?php if (!empty($unread_notifications)): ?> <span class="badge"><?= $unread_notifications ?></span><?php endif; ?></a></p>
   <p><a class="btn" role="button" href="messages.php">Messages<?php if (!empty($unread_messages)): ?> <span class="badge"><?= $unread_messages ?></span><?php endif; ?></a></p>
   <?php if (!empty($_SESSION['is_admin'])): ?>
     <p><a class="btn" role="button" href="/admin/index.php">Admin Panel</a></p>
