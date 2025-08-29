@@ -6,73 +6,134 @@ if (!$_SESSION['is_admin']) {
   exit;
 }
 
-$settingsFile = __DIR__ . '/../assets/vaporwave.json';
-$defaults = [
-  'color1' => '#ff71ce',
-  'color2' => '#01cdfe',
-  'color3' => '#05ffa1',
-  'speed' => 20,
-  'header_texture' => '',
-  'footer_texture' => '',
-  'sidebar_depth' => 12,
-  'button_depth' => 6,
-];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $data = [
-    'color1' => $_POST['color1'] ?? $defaults['color1'],
-    'color2' => $_POST['color2'] ?? $defaults['color2'],
-    'color3' => $_POST['color3'] ?? $defaults['color3'],
-    'speed' => max(5, min(60, (int)($_POST['speed'] ?? $defaults['speed']))),
-    'header_texture' => trim($_POST['header_texture'] ?? ''),
-    'footer_texture' => trim($_POST['footer_texture'] ?? ''),
-    'sidebar_depth' => (int)($_POST['sidebar_depth'] ?? $defaults['sidebar_depth']),
-    'button_depth' => (int)($_POST['button_depth'] ?? $defaults['button_depth']),
-  ];
-  file_put_contents($settingsFile, json_encode($data));
-}
-
-if (file_exists($settingsFile)) {
-  $stored = json_decode(file_get_contents($settingsFile), true);
-  if (is_array($stored)) {
-    $defaults = array_merge($defaults, $stored);
+$themesFile = __DIR__ . '/../assets/themes.json';
+$themes = [];
+if (file_exists($themesFile)) {
+  $json = json_decode(file_get_contents($themesFile), true);
+  if (is_array($json)) {
+    $themes = $json;
   }
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $name = strtolower(preg_replace('/[^a-z0-9_-]/i', '', $_POST['name'] ?? ''));
+  if ($name) {
+    $themes[$name] = [
+      'label' => $_POST['label'] ?: ucfirst($name),
+      'vars' => [
+        '--bg' => $_POST['bg'] ?? '#ffffff',
+        '--fg' => $_POST['fg'] ?? '#000000',
+        '--accent' => $_POST['accent'] ?? '#ff71ce',
+        '--gradient' => $_POST['gradient'] ?? 'linear-gradient(135deg, #ff71ce 0%, #01cdfe 100%)',
+        '--vap1' => $_POST['vap1'] ?? null,
+        '--vap2' => $_POST['vap2'] ?? null,
+        '--vap3' => $_POST['vap3'] ?? null,
+      ],
+    ];
+    $freq = $_POST['pattern_freq'] ?? '';
+    $amp = $_POST['pattern_amp'] ?? '';
+    $poly = $_POST['pattern_poly'] ?? '';
+    $hue = $_POST['pattern_hue'] ?? '';
+    $sat = $_POST['pattern_sat'] ?? '';
+    if ($freq !== '' || $amp !== '' || $poly !== '' || $hue !== '' || $sat !== '') {
+      $themes[$name]['pattern'] = [
+        'frequency' => (float)$freq,
+        'amplitude' => (float)$amp,
+        'poly' => array_map('floatval', array_filter(array_map('trim', explode(',', $poly)), 'strlen')),
+        'hue' => (int)$hue,
+        'sat' => (int)$sat,
+      ];
+    }
+    file_put_contents($themesFile, json_encode($themes, JSON_PRETTY_PRINT));
+  }
+  header('Location: theme.php');
+  exit;
+}
+
+$edit = $_GET['edit'] ?? '';
+$current = $themes[$edit] ?? null;
 ?>
 <?php require '../includes/layout.php'; ?>
-  <title>Vaporwave Theme Settings</title>
+  <title>Theme Settings</title>
   <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
   <?php include '../includes/header.php'; ?>
-  <h2>Vaporwave Theme Settings</h2>
+  <h2>Theme Settings</h2>
+<?php if ($current): ?>
   <form method="post">
-    <label>Gradient Color 1
-      <input type="color" name="color1" value="<?= htmlspecialchars($defaults['color1'], ENT_QUOTES, 'UTF-8'); ?>">
+    <input type="hidden" name="name" value="<?= htmlspecialchars($edit, ENT_QUOTES, 'UTF-8'); ?>">
+    <label>Name
+      <input type="text" name="label" value="<?= htmlspecialchars($current['label'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
     </label>
-    <label>Gradient Color 2
-      <input type="color" name="color2" value="<?= htmlspecialchars($defaults['color2'], ENT_QUOTES, 'UTF-8'); ?>">
+    <label>Background Color
+      <input type="color" name="bg" value="<?= htmlspecialchars($current['vars']['--bg'] ?? '#ffffff', ENT_QUOTES, 'UTF-8'); ?>">
     </label>
-    <label>Gradient Color 3
-      <input type="color" name="color3" value="<?= htmlspecialchars($defaults['color3'], ENT_QUOTES, 'UTF-8'); ?>">
+    <label>Foreground Color
+      <input type="color" name="fg" value="<?= htmlspecialchars($current['vars']['--fg'] ?? '#000000', ENT_QUOTES, 'UTF-8'); ?>">
     </label>
-    <label>Animation Speed (seconds)
-      <input type="range" min="5" max="60" name="speed" value="<?= htmlspecialchars($defaults['speed'], ENT_QUOTES, 'UTF-8'); ?>">
+    <label>Accent Color
+      <input type="color" name="accent" value="<?= htmlspecialchars($current['vars']['--accent'] ?? '#ff71ce', ENT_QUOTES, 'UTF-8'); ?>">
     </label>
-    <label>Header Texture URL
-      <input type="text" name="header_texture" value="<?= htmlspecialchars($defaults['header_texture'], ENT_QUOTES, 'UTF-8'); ?>">
+    <label>Gradient CSS
+      <input type="text" name="gradient" value="<?= htmlspecialchars($current['vars']['--gradient'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
     </label>
-    <label>Footer Texture URL
-      <input type="text" name="footer_texture" value="<?= htmlspecialchars($defaults['footer_texture'], ENT_QUOTES, 'UTF-8'); ?>">
+    <label>Vap Color 1
+      <input type="color" name="vap1" value="<?= htmlspecialchars($current['vars']['--vap1'] ?? '#ff71ce', ENT_QUOTES, 'UTF-8'); ?>">
     </label>
-    <label>Sidebar Depth (px)
-      <input type="number" name="sidebar_depth" value="<?= htmlspecialchars($defaults['sidebar_depth'], ENT_QUOTES, 'UTF-8'); ?>">
+    <label>Vap Color 2
+      <input type="color" name="vap2" value="<?= htmlspecialchars($current['vars']['--vap2'] ?? '#01cdfe', ENT_QUOTES, 'UTF-8'); ?>">
     </label>
-    <label>Button Depth (px)
-      <input type="number" name="button_depth" value="<?= htmlspecialchars($defaults['button_depth'], ENT_QUOTES, 'UTF-8'); ?>">
+    <label>Vap Color 3
+      <input type="color" name="vap3" value="<?= htmlspecialchars($current['vars']['--vap3'] ?? '#05ffa1', ENT_QUOTES, 'UTF-8'); ?>">
     </label>
-    <button type="submit">Save</button>
+    <label>Pattern Frequency
+      <input type="number" step="0.1" name="pattern_freq" value="<?= htmlspecialchars($current['pattern']['frequency'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+    </label>
+    <label>Pattern Amplitude
+      <input type="number" step="0.1" name="pattern_amp" value="<?= htmlspecialchars($current['pattern']['amplitude'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+    </label>
+    <label>Pattern Polynomial (comma-separated)
+      <input type="text" name="pattern_poly" value="<?= htmlspecialchars(isset($current['pattern']['poly']) ? implode(',', $current['pattern']['poly']) : '', ENT_QUOTES, 'UTF-8'); ?>">
+    </label>
+    <label>Pattern Hue
+      <input type="number" name="pattern_hue" value="<?= htmlspecialchars($current['pattern']['hue'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+    </label>
+    <label>Pattern Saturation
+      <input type="number" name="pattern_sat" value="<?= htmlspecialchars($current['pattern']['sat'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+    </label>
+    <button type="submit">Save Theme</button>
   </form>
+  <p><a href="theme.php">Back</a></p>
+<?php else: ?>
+  <ul>
+    <?php foreach ($themes as $name => $t): ?>
+      <li><?= htmlspecialchars($t['label'], ENT_QUOTES, 'UTF-8'); ?> - <a href="?edit=<?= urlencode($name); ?>">Edit</a></li>
+    <?php endforeach; ?>
+  </ul>
+  <p>To create a new theme, enter a unique name below:</p>
+  <form method="post">
+    <label>Key
+      <input type="text" name="name" required>
+    </label>
+    <label>Display Name
+      <input type="text" name="label" required>
+    </label>
+    <label>Background Color
+      <input type="color" name="bg" value="#ffffff">
+    </label>
+    <label>Foreground Color
+      <input type="color" name="fg" value="#000000">
+    </label>
+    <label>Accent Color
+      <input type="color" name="accent" value="#ff71ce">
+    </label>
+    <label>Gradient CSS
+      <input type="text" name="gradient" value="linear-gradient(135deg, #ff71ce 0%, #01cdfe 100%)">
+    </label>
+    <button type="submit">Create Theme</button>
+  </form>
+<?php endif; ?>
   <p><a href="index.php">Back to Admin Panel</a></p>
   <?php include '../includes/footer.php'; ?>
 </body>
