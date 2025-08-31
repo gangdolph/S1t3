@@ -1,6 +1,8 @@
 <?php
+require 'includes/requirements.php';
 require 'includes/auth.php';
 require 'includes/db.php';
+require 'includes/url.php';
 
 // Load Stripe secret from config file if present or fallback to environment variable
 $stripeSecret = null;
@@ -66,8 +68,15 @@ if ($code !== '') {
     } else {
       die('Invalid discount code.');
     }
-    $stmt->close();
+  $stmt->close();
   }
+}
+
+$successUrl = base_url('/success.php');
+$cancelUrl = base_url('/cancel.php');
+
+if (!filter_var($successUrl, FILTER_VALIDATE_URL) || !filter_var($cancelUrl, FILTER_VALIDATE_URL)) {
+  die('Invalid redirect URL.');
 }
 
 $session = \Stripe\Checkout\Session::create([
@@ -81,8 +90,8 @@ $session = \Stripe\Checkout\Session::create([
     'quantity' => 1,
   ]],
   'mode' => 'payment',
-  'success_url' => 'success.php',
-  'cancel_url' => 'cancel.php',
+  'success_url' => $successUrl,
+  'cancel_url' => $cancelUrl,
 ]);
 
 header("Location: " . $session->url);
