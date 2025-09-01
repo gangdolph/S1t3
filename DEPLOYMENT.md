@@ -11,3 +11,9 @@
 - Run migration `migrations/013_create_service_requests.sql` in all environments to create the `service_requests` table,
   which stores device service requests.
 - Ensure `assets/themes.json` is deployed and readable by the web server so the client can load theme definitions.
+- Run `schema/payments.sql` in all environments to create the `payments` table for recording Square transactions.
+- Configure Square payment credentials in `config.php` (or via environment variables):
+  - `square_application_id`
+  - `square_location_id`
+  - `square_access_token`
+  - `square_environment` (`sandbox` or `production`)
