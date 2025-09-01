@@ -38,9 +38,13 @@ $squareConfig = [
         : ($config['square_environment'] ?? getenv('SQUARE_ENVIRONMENT') ?? 'sandbox'),
 ];
 
-$square = new SquareClient([
-    'accessToken' => $squareConfig['access_token'],
-    'environment' => $squareConfig['environment'],
-]);
+$square = new SquareClient(
+    token: $squareConfig['access_token'],
+    options: [
+        'baseUrl' => $squareConfig['environment'] === 'production'
+            ? 'https://connect.squareup.com'
+            : 'https://connect.squareupsandbox.com',
+    ],
+);
 
 ?>
