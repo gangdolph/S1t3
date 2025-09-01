@@ -14,6 +14,13 @@ return [
 
   // Google AdSense configuration
   'adsense_client' => 'ca-pub-XXXXXXXXXXXXXXXX',
-  'adsense_slot' => '1234567890'
-  // TODO: Square payment configuration goes here
+  'adsense_slot' => '1234567890',
+
+  // Square payment configuration
+  // These can also be supplied via env vars:
+  // SQUARE_APPLICATION_ID, SQUARE_LOCATION_ID, SQUARE_ACCESS_TOKEN, SQUARE_ENVIRONMENT
+  'square_application_id' => 'sandbox-sq0idb-xxxxxxxxxxxxxxxxxxxxxx',
+  'square_location_id' => 'LXXXXXXXXXXXX',
+  'square_access_token' => 'EAAAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  'square_environment' => 'sandbox', // or 'production'
 ];
