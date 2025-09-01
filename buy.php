@@ -4,8 +4,11 @@ require 'includes/db.php';
 
 $search = trim($_GET['search'] ?? '');
 $category = trim($_GET['category'] ?? '');
+$sort = $_GET['sort'] ?? '';
+$limitParam = (int)($_GET['limit'] ?? 25);
+$limitOptions = [25, 50, 100];
+$limit = in_array($limitParam, $limitOptions) ? $limitParam : 25;
 $page = max(1, (int)($_GET['page'] ?? 1));
-$limit = 10;
 $offset = ($page - 1) * $limit;
 
 $where = "WHERE status='approved'";
@@ -37,7 +40,14 @@ $stmt->fetch();
 $stmt->close();
 $totalPages = (int)ceil($total / $limit);
 
-$sql = "SELECT id, title, price, category, image FROM listings $where ORDER BY created_at DESC LIMIT ? OFFSET ?";
+$orderBy = 'title ASC';
+if ($sort === 'price') {
+    $orderBy = 'price ASC';
+} elseif ($sort === 'latest') {
+    $orderBy = 'created_at DESC';
+}
+
+$sql = "SELECT id, title, description, price, category, image FROM listings $where ORDER BY $orderBy LIMIT ? OFFSET ?";
 $paramsLimit = $params;
 $typesLimit = $types . 'ii';
 $paramsLimit[] = $limit;
@@ -52,6 +62,7 @@ $stmt->close();
   <meta charset="UTF-8">
   <title>Buy from SkuzE</title>
   <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/buy.js" defer></script>
 </head>
 <body>
   <?php include 'includes/sidebar.php'; ?>
@@ -68,26 +79,63 @@ $stmt->close();
           <option value="pc" <?= $category==='pc'?'selected':'' ?>>PC</option>
           <option value="other" <?= $category==='other'?'selected':'' ?>>Other</option>
         </select>
+        <input type="hidden" name="sort" value="<?= htmlspecialchars($sort) ?>">
+        <input type="hidden" name="limit" value="<?= $limit ?>">
         <button type="submit">Filter</button>
       </form>
     </aside>
     <section class="listing-results">
+      <div class="listing-toolbar">
+        <div class="view-toggle">
+          <button type="button" class="view-grid active" aria-label="Grid view">▥</button>
+          <button type="button" class="view-list" aria-label="List view">≡</button>
+        </div>
+        <form method="get">
+          <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+          <input type="hidden" name="category" value="<?= htmlspecialchars($category) ?>">
+          <label>Sort by:
+            <select name="sort" onchange="this.form.submit()">
+              <option value="" <?= $sort===''?'selected':'' ?>>Default</option>
+              <option value="price" <?= $sort==='price'?'selected':'' ?>>Price</option>
+              <option value="latest" <?= $sort==='latest'?'selected':'' ?>>Latest</option>
+            </select>
+          </label>
+          <label>Show:
+            <select name="limit" onchange="this.form.submit()">
+              <option value="25" <?= $limit===25?'selected':'' ?>>25</option>
+              <option value="50" <?= $limit===50?'selected':'' ?>>50</option>
+              <option value="100" <?= $limit===100?'selected':'' ?>>100</option>
+            </select>
+          </label>
+        </form>
+      </div>
       <?php if ($listings): ?>
-        <ul>
+        <div class="product-grid" id="product-container">
         <?php foreach ($listings as $l): ?>
-          <li class="listing">
+          <div class="product-card">
             <?php $link = isset($_SESSION['user_id']) ? "checkout.php?listing_id={$l['id']}" : 'login.php'; ?>
             <a href="<?= $link ?>" class="listing-link">
-              <h3><?= htmlspecialchars($l['title']) ?></h3>
-              <p>Price: $<?= htmlspecialchars($l['price']) ?></p>
-              <p>Category: <?= htmlspecialchars($l['category']) ?></p>
               <?php if ($l['image']): ?>
-                <img src="uploads/<?= htmlspecialchars($l['image']) ?>" alt="" width="120">
+                <img src="uploads/<?= htmlspecialchars($l['image']) ?>" alt="">
               <?php endif; ?>
+              <h3><?= htmlspecialchars($l['title']) ?></h3>
             </a>
-          </li>
+            <?php
+              $features = array_slice(array_filter(array_map('trim', explode("\n", $l['description']))), 0, 3);
+              if ($features):
+            ?>
+              <ul class="product-features">
+                <?php foreach ($features as $f): ?>
+                  <li><?= htmlspecialchars($f) ?></li>
+                <?php endforeach; ?>
+              </ul>
+            <?php endif; ?>
+            <p class="price">$<?= htmlspecialchars($l['price']) ?></p>
+            <div class="rating">★★★★★</div>
+            <button class="add-to-cart" data-id="<?= $l['id'] ?>">Add to Cart</button>
+          </div>
         <?php endforeach; ?>
-        </ul>
+        </div>
       <?php else: ?>
         <p>No listings found. <a href="buy-step.php">Request a device</a></p>
       <?php endif; ?>
