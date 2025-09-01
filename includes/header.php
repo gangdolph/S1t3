@@ -65,9 +65,10 @@ if (!empty($_SESSION['user_id'])) {
     </ul>
   </nav>
 </header>
-<div id="theme-modal" class="theme-modal" role="dialog" aria-modal="true" hidden tabindex="-1">
+<div id="theme-modal" class="theme-modal" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title" hidden tabindex="-1">
   <div class="modal-content">
-    <h2>Select Theme</h2>
+    <h2 id="theme-modal-title">Select Theme</h2>
+    <div class="theme-error" role="alert"></div>
     <div class="theme-options"></div>
     <div id="theme-preview" class="theme-preview">
       <p>Sample text</p>
