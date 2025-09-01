@@ -22,13 +22,15 @@ $requests = $stmt->fetch_all(MYSQLI_ASSOC);
 <body>
   <?php include '../includes/header.php'; ?>
   <h2>Admin Panel</h2>
-  <p><a class="btn" href="listings.php">Review Listings</a></p>
-  <p><a class="btn" href="trade-requests.php">Review Trade Requests</a></p>
-  <p><a class="btn" href="discount-codes.php">Manage Discount Codes</a></p>
-  <p><a class="btn" href="users.php">Manage Users</a></p>
-  <p><a class="btn" href="theme.php">Vaporwave Theme Settings</a></p>
-  <p><a class="btn" href="toolbox.php">Manage Toolbox</a></p>
-  <p><a class="btn" href="../dashboard.php">Back to Dashboard</a></p>
+  <div class="nav-links">
+    <a class="btn" href="listings.php">Review Listings</a>
+    <a class="btn" href="trade-requests.php">Review Trade Requests</a>
+    <a class="btn" href="discount-codes.php">Manage Discount Codes</a>
+    <a class="btn" href="users.php">Manage Users</a>
+    <a class="btn" href="theme.php">Vaporwave Theme Settings</a>
+    <a class="btn" href="toolbox.php">Manage Toolbox</a>
+    <a class="btn" href="../dashboard.php">Back to Dashboard</a>
+  </div>
 
   <table>
     <thead>

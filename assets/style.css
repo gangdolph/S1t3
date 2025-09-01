@@ -64,7 +64,9 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   color: var(--fg);
-  font-family: Georgia, serif;
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  font-size: 0.85rem;
   margin: 0;
   padding: 1rem;
 }
@@ -227,7 +229,14 @@ footer {
   font-size: 0.9rem;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), var(--gradient);
   padding: 1rem 0;
-  box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.5), 0 2px 3px rgba(255, 255, 255, 0.1);
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  border-left: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  border-right: 2px solid rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 -2px var(--footer-depth) rgba(0, 0, 0, 0.5),
+    0 2px var(--footer-depth) rgba(255, 255, 255, 0.1);
   transform: perspective(500px) translateZ(0);
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -245,7 +254,10 @@ footer::before {
 
 footer:hover {
   transform: perspective(500px) translateZ(var(--footer-depth));
-  box-shadow: 0 -4px var(--footer-depth) rgba(0, 0, 0, 0.6), 0 4px var(--footer-depth) rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 -4px var(--footer-depth) rgba(0, 0, 0, 0.6),
+    0 4px var(--footer-depth) rgba(255, 255, 255, 0.2);
 }
 
 .footer-nav {
@@ -344,7 +356,14 @@ footer:hover {
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)), var(--gradient);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5), 0 -2px 3px rgba(255, 255, 255, 0.1);
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  border-left: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  border-right: 2px solid rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 2px var(--header-depth) rgba(0, 0, 0, 0.5),
+    0 -2px var(--header-depth) rgba(255, 255, 255, 0.1);
   perspective: 500px;
   transform: perspective(500px) translateZ(0);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -364,7 +383,10 @@ footer:hover {
 
 .site-header:hover {
   transform: perspective(500px) translateZ(var(--header-depth));
-  box-shadow: 0 4px var(--header-depth) rgba(0, 0, 0, 0.6), 0 -4px var(--header-depth) rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 4px var(--header-depth) rgba(0, 0, 0, 0.6),
+    0 -4px var(--header-depth) rgba(255, 255, 255, 0.2);
 }
 
 .header-left,
@@ -487,16 +509,28 @@ form button:active {
   box-shadow: inset 0 calc(var(--btn-depth) / 3) 0 rgba(0, 0, 0, 0.4);
 }
 
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
 .btn {
   background: var(--accent);
   color: #fff;
-  border: none;
+  border-top: 2px solid rgba(255, 255, 255, 0.4);
+  border-left: 2px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+  border-right: 2px solid rgba(0, 0, 0, 0.4);
   border-radius: 4px;
   padding: 0.5rem 1rem;
   text-decoration: none;
   display: inline-block;
   cursor: pointer;
-  box-shadow: 0 calc(var(--btn-depth) / 2) 0 rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.4),
+    0 calc(var(--btn-depth) / 2) 0 rgba(0, 0, 0, 0.4);
   transform: perspective(400px) translateZ(0);
   transition: transform 0.1s, box-shadow 0.1s;
 }
@@ -504,12 +538,16 @@ form button:active {
 .btn:hover,
 .btn:focus {
   transform: perspective(400px) translateZ(var(--btn-depth));
-  box-shadow: 0 var(--btn-depth) var(--btn-depth) rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.4),
+    0 var(--btn-depth) var(--btn-depth) rgba(0, 0, 0, 0.4);
 }
 
 .btn:active {
   transform: perspective(400px) translateZ(calc(var(--btn-depth) / 3));
-  box-shadow: inset 0 calc(var(--btn-depth) / 3) 0 rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 2px 0 rgba(0, 0, 0, 0.4),
+    inset 0 calc(var(--btn-depth) / 3) 0 rgba(0, 0, 0, 0.4);
 }
 
 /* Theme modal */
@@ -539,7 +577,20 @@ form button:active {
 
 #theme-modal .theme-options {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#theme-modal .theme-options .btn.active {
+  transform: perspective(400px) translateZ(calc(var(--btn-depth) / 3));
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 2px 0 rgba(0, 0, 0, 0.4),
+    inset 0 calc(var(--btn-depth) / 3) 0 rgba(0, 0, 0, 0.4);
+}
+
+#theme-modal .theme-error {
+  color: #c00;
   margin-bottom: 1rem;
 }
 
@@ -758,7 +809,13 @@ tbody tr:nth-child(even) {
   height: 100%;
   width: 200px;
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), var(--gradient);
-  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  border-left: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  border-right: 2px solid rgba(0, 0, 0, 0.5);
+  box-shadow: inset 2px 0 0 rgba(255, 255, 255, 0.2),
+    inset -2px 0 0 rgba(0, 0, 0, 0.5),
+    4px 0 var(--nav-depth) rgba(0, 0, 0, 0.3);
   transform: translateX(-100%) rotateY(45deg);
   transform-origin: left center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -773,7 +830,9 @@ tbody tr:nth-child(even) {
 
 .side-nav.open:hover {
   transform: translateX(0) rotateY(0deg) translateZ(var(--nav-depth));
-  box-shadow: 6px 0 var(--nav-depth) rgba(0, 0, 0, 0.5);
+  box-shadow: inset 2px 0 0 rgba(255, 255, 255, 0.2),
+    inset -2px 0 0 rgba(0, 0, 0, 0.5),
+    6px 0 var(--nav-depth) rgba(0, 0, 0, 0.5);
 }
 
 .side-nav-group {
