@@ -34,6 +34,7 @@ if (!empty($_SESSION['user_id'])) {
 
     $unread_notifications = count_unread_notifications($conn, $_SESSION['user_id']);
   }
+  $cart_count = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 ?>
 <header class="site-header">
   <nav class="site-nav header-left">
@@ -61,6 +62,12 @@ if (!empty($_SESSION['user_id'])) {
       <li><a href="/logout.php">Logout</a></li>
       <li class="user-info"><?= username_with_avatar($conn, $_SESSION['user_id'], $username) ?></li>
 <?php endif; ?>
+      <li class="cart-link">
+        <a href="/checkout.php">
+          <img src="/assets/cart.svg" alt="Cart">
+          <?php if (!empty($cart_count)): ?><span class="badge"><?= $cart_count ?></span><?php endif; ?>
+        </a>
+      </li>
       <li><button id="theme-toggle" type="button" aria-haspopup="dialog" aria-controls="theme-modal">Themes</button></li>
     </ul>
   </nav>

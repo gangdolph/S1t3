@@ -113,7 +113,7 @@ $stmt->close();
         <div class="product-grid" id="product-container">
         <?php foreach ($listings as $l): ?>
           <div class="product-card">
-            <?php $link = isset($_SESSION['user_id']) ? "checkout.php?listing_id={$l['id']}" : 'login.php'; ?>
+            <?php $link = "listing.php?listing_id={$l['id']}"; ?>
             <a href="<?= $link ?>" class="listing-link">
               <?php if ($l['image']): ?>
                 <img src="uploads/<?= htmlspecialchars($l['image']) ?>" alt="">

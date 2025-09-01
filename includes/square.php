@@ -7,7 +7,7 @@
  * ($squareConfig) and client ($square).
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 if (!isset($config)) {
     $configPath = __DIR__ . '/../config.php';
@@ -18,7 +18,6 @@ if (!isset($config)) {
     }
 }
 
-use Square\Environment;
 use Square\SquareClient;
 
 $squareConfig = [
@@ -30,7 +29,7 @@ $squareConfig = [
 
 $square = new SquareClient([
     'accessToken' => $squareConfig['access_token'],
-    'environment' => $squareConfig['environment'] === 'production' ? Environment::PRODUCTION : Environment::SANDBOX,
+    'environment' => $squareConfig['environment'],
 ]);
 
 ?>
