@@ -5,7 +5,8 @@
       "--bg": "#2d1e59",
       "--fg": "#f8f9fa",
       "--accent": "#ff71ce",
-      "--gradient": "linear-gradient(135deg, #ff71ce 0%, #01cdfe 100%)"
+      "--gradient": "linear-gradient(135deg, #ff71ce 0%, #01cdfe 100%)",
+      "--border": "rgba(255, 255, 255, 0.2)"
     }
   },
   "dark": {
@@ -14,7 +15,8 @@
       "--bg": "#1b1135",
       "--fg": "#e0d9f6",
       "--accent": "#01cdfe",
-      "--gradient": "linear-gradient(135deg, #2d1e59 0%, #09002e 100%)"
+      "--gradient": "linear-gradient(135deg, #2d1e59 0%, #09002e 100%)",
+      "--border": "rgba(224, 217, 246, 0.3)"
     }
   },
   "vaporwave": {
@@ -26,12 +28,15 @@
       "--gradient": "linear-gradient(-45deg, var(--vap1), var(--vap2), var(--vap3), var(--vap1))",
       "--vap1": "#ff71ce",
       "--vap2": "#01cdfe",
-      "--vap3": "#05ffa1"
+      "--vap3": "#05ffa1",
+      "--border": "var(--accent)"
     },
     "pattern": {
       "frequency": 5,
       "amplitude": 20,
-      "poly": [0],
+      "poly": [
+        0
+      ],
       "hue": 0,
       "sat": 100
     }
@@ -42,7 +47,8 @@
       "--bg": "#ffe4e1",
       "--fg": "#333333",
       "--accent": "#ffb6c1",
-      "--gradient": "linear-gradient(135deg, #ffe4e1 0%, #e0ffff 100%)"
+      "--gradient": "linear-gradient(135deg, #ffe4e1 0%, #e0ffff 100%)",
+      "--border": "#333333"
     }
   },
   "forest": {
@@ -51,7 +57,8 @@
       "--bg": "#2e3d2f",
       "--fg": "#e6e8e6",
       "--accent": "#4caf50",
-      "--gradient": "linear-gradient(135deg, #2e3d2f 0%, #1b2c20 100%)"
+      "--gradient": "linear-gradient(135deg, #2e3d2f 0%, #1b2c20 100%)",
+      "--border": "var(--accent)"
     }
   }
 }

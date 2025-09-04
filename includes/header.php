@@ -52,23 +52,27 @@ if (!empty($_SESSION['user_id'])) {
   </form>
   <nav class="site-nav header-right">
     <ul>
+      <li><button id="theme-toggle" type="button" aria-haspopup="dialog" aria-controls="theme-modal">Themes</button></li>
+      <li class="language-selector">
+        <select id="language-select" name="language">
+          <option value="en">EN</option>
+          <option value="es">ES</option>
+        </select>
+      </li>
+      <li class="user-info">
 <?php if (empty($_SESSION['user_id'])): ?>
-      <li><a href="/login.php">Login</a></li>
-      <li><a href="/register.php">Register</a></li>
+        <a href="/login.php">Login</a> /
+        <a href="/register.php">Register</a>
 <?php else: ?>
-      <li><a href="/dashboard.php">Dashboard</a></li>
-      <li><a href="/notifications.php">Notifications<?php if (!empty($unread_notifications)): ?><span class="badge"><?= $unread_notifications ?></span><?php endif; ?></a></li>
-      <li><a href="/messages.php">Messages<?php if (!empty($unread_messages)): ?><span class="badge"><?= $unread_messages ?></span><?php endif; ?></a></li>
-      <li><a href="/logout.php">Logout</a></li>
-      <li class="user-info"><?= username_with_avatar($conn, $_SESSION['user_id'], $username) ?></li>
+        <?= username_with_avatar($conn, $_SESSION['user_id'], $username) ?>
 <?php endif; ?>
+      </li>
       <li class="cart-link">
         <a href="/checkout.php">
           <img src="/assets/cart.svg" alt="Cart">
           <?php if (!empty($cart_count)): ?><span class="badge"><?= $cart_count ?></span><?php endif; ?>
         </a>
       </li>
-      <li><button id="theme-toggle" type="button" aria-haspopup="dialog" aria-controls="theme-modal">Themes</button></li>
     </ul>
   </nav>
 </header>
