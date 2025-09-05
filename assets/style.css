@@ -448,7 +448,7 @@ footer:hover {
 .header-right ul {
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: repeat(4, auto);
+  grid-auto-columns: auto;
   align-items: center;
   justify-content: end;
 }
@@ -460,7 +460,8 @@ footer:hover {
 
 header .header-right button,
 header .header-right select,
-header .header-right a {
+header .header-right .user-info,
+header .header-right .cart-link a {
   background: var(--bg);
   border: 1px solid var(--border);
   color: var(--fg);
@@ -470,7 +471,8 @@ header .header-right a {
   box-shadow: none;
 }
 
-header .header-right a {
+header .header-right .user-info,
+header .header-right .cart-link a {
   display: inline-flex;
   align-items: center;
 }

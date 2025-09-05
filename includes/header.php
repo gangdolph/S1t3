@@ -59,14 +59,16 @@ if (!empty($_SESSION['user_id'])) {
           <option value="es">ES</option>
         </select>
       </li>
-      <li class="user-info">
 <?php if (empty($_SESSION['user_id'])): ?>
-        <a href="/login.php">Login</a> /
-        <a href="/register.php">Register</a>
+      <li><a href="/login.php">Login</a></li>
+      <li><a href="/register.php">Register</a></li>
 <?php else: ?>
-        <?= username_with_avatar($conn, $_SESSION['user_id'], $username) ?>
+      <li><a href="/dashboard.php">Dashboard</a></li>
+      <li><a href="/notifications.php">Notifications<?php if (!empty($unread_notifications)): ?><span class="badge"><?= $unread_notifications ?></span><?php endif; ?></a></li>
+      <li><a href="/messages.php">Messages<?php if (!empty($unread_messages)): ?><span class="badge"><?= $unread_messages ?></span><?php endif; ?></a></li>
+      <li><a href="/logout.php">Logout</a></li>
+      <li class="user-info"><?= username_with_avatar($conn, $_SESSION['user_id'], $username) ?></li>
 <?php endif; ?>
-      </li>
       <li class="cart-link">
         <a href="/checkout.php">
           <img src="/assets/cart.svg" alt="Cart">
