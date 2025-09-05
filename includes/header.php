@@ -52,6 +52,13 @@ if (!empty($_SESSION['user_id'])) {
   </form>
   <nav class="site-nav header-right">
     <ul>
+      <li><button id="theme-toggle" type="button" aria-haspopup="dialog" aria-controls="theme-modal">Themes</button></li>
+      <li class="language-selector">
+        <select id="language-select" name="language">
+          <option value="en">EN</option>
+          <option value="es">ES</option>
+        </select>
+      </li>
 <?php if (empty($_SESSION['user_id'])): ?>
       <li><a href="/login.php">Login</a></li>
       <li><a href="/register.php">Register</a></li>
@@ -68,7 +75,6 @@ if (!empty($_SESSION['user_id'])) {
           <?php if (!empty($cart_count)): ?><span class="badge"><?= $cart_count ?></span><?php endif; ?>
         </a>
       </li>
-      <li><button id="theme-toggle" type="button" aria-haspopup="dialog" aria-controls="theme-modal">Themes</button></li>
     </ul>
   </nav>
 </header>

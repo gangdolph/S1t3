@@ -16,6 +16,7 @@
   --pattern-sat: 100%;
   --btn-depth: 6px;
   --cta-depth: 20px;
+  --border: rgba(255, 255, 255, 0.2);
 }
 
 [data-theme='dark'] {
@@ -23,6 +24,7 @@
   --fg: #e0d9f6;
   --accent: #01cdfe;
   --gradient: linear-gradient(135deg, #2d1e59 0%, #09002e 100%);
+  --border: rgba(224, 217, 246, 0.3);
 }
 
 [data-theme='vaporwave'] {
@@ -30,6 +32,7 @@
   --fg: #ffffff;
   --accent: var(--vap1);
   --gradient: linear-gradient(-45deg, var(--vap1), var(--vap2), var(--vap3), var(--vap1));
+  --border: var(--accent);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,6 +41,7 @@
     --fg: #e0d9f6;
     --accent: #01cdfe;
     --gradient: linear-gradient(135deg, #2d1e59 0%, #09002e 100%);
+    --border: rgba(224, 217, 246, 0.3);
   }
 }
 
@@ -69,6 +73,19 @@ body {
   font-size: 0.85rem;
   margin: 0;
   padding: 1rem;
+  border: 2px solid var(--border);
+  --nav-shift: 0;
+  transform: translateX(var(--nav-shift));
+  transition: transform 0.3s ease;
+}
+
+a,
+a:visited {
+  color: var(--fg);
+}
+
+body.nav-open {
+  --nav-shift: 200px;
 }
 
 .vap-lines {
@@ -237,8 +254,8 @@ footer {
     inset 0 -2px 0 rgba(0, 0, 0, 0.5),
     0 -2px var(--footer-depth) rgba(0, 0, 0, 0.5),
     0 2px var(--footer-depth) rgba(255, 255, 255, 0.1);
-  transform: perspective(500px) translateZ(0);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transform: perspective(500px) translateZ(0) translateX(var(--nav-shift));
+  transition: transform 0.3s, box-shadow 0.2s;
 }
 
 footer::before {
@@ -253,7 +270,8 @@ footer::before {
 }
 
 footer:hover {
-  transform: perspective(500px) translateZ(var(--footer-depth));
+  transform: perspective(500px) translateZ(var(--footer-depth))
+    translateX(var(--nav-shift));
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2),
     inset 0 -2px 0 rgba(0, 0, 0, 0.5),
     0 -4px var(--footer-depth) rgba(0, 0, 0, 0.6),
@@ -365,8 +383,8 @@ footer:hover {
     0 2px var(--header-depth) rgba(0, 0, 0, 0.5),
     0 -2px var(--header-depth) rgba(255, 255, 255, 0.1);
   perspective: 500px;
-  transform: perspective(500px) translateZ(0);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transform: perspective(500px) translateZ(0) translateX(var(--nav-shift));
+  transition: transform 0.3s, box-shadow 0.2s;
   text-transform: uppercase;
 }
 
@@ -382,7 +400,8 @@ footer:hover {
 }
 
 .site-header:hover {
-  transform: perspective(500px) translateZ(var(--header-depth));
+  transform: perspective(500px) translateZ(var(--header-depth))
+    translateX(var(--nav-shift));
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2),
     inset 0 -2px 0 rgba(0, 0, 0, 0.5),
     0 4px var(--header-depth) rgba(0, 0, 0, 0.6),
@@ -393,8 +412,12 @@ footer:hover {
 .header-center,
 .header-right {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+}
+
+.header-right {
+  justify-content: flex-end;
 }
 
 .header-left,
@@ -420,6 +443,38 @@ footer:hover {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.header-right ul {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: auto;
+  align-items: center;
+  justify-content: end;
+}
+
+.header-right li {
+  display: flex;
+  align-items: center;
+}
+
+header .header-right button,
+header .header-right select,
+header .header-right .user-info,
+header .header-right .cart-link a {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+header .header-right .user-info,
+header .header-right .cart-link a {
+  display: inline-flex;
+  align-items: center;
 }
 
 .site-nav a {
@@ -461,6 +516,7 @@ footer:hover {
 
   .header-left ul,
   .header-right ul {
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -618,14 +674,19 @@ td {
 th {
   background: var(--accent);
   color: #fff;
+  font-weight: 600;
+}
+
+table a {
+  color: var(--fg);
 }
 
 tbody tr:nth-child(even) {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme='dark'] tbody tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Drag and drop upload */
@@ -908,7 +969,17 @@ tbody tr:nth-child(even) {
 }
 
 .message {
-  margin-bottom: 0.5rem;
+  max-width: 60%;
+  margin: 0 0 0.5rem;
+}
+
+.message-left {
+  margin-right: auto;
+}
+
+.message-center {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .message-form textarea {

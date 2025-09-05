@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const sideNav = document.querySelector('.side-nav');
   if (toggle && sideNav) {
     toggle.addEventListener('click', () => {
-      sideNav.classList.toggle('open');
+      sideNav.classList.add('open');
+      document.body.classList.toggle('nav-open');
     });
   }
 });

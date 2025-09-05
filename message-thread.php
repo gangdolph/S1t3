@@ -58,7 +58,7 @@ $stmt->close();
   <h2>Conversation with <?= htmlspecialchars($other_username) ?></h2>
   <div class="message-thread">
     <?php foreach ($messages as $msg): ?>
-      <div class="message">
+      <div class="message message-left">
         <strong><?= htmlspecialchars($msg['sender_name']) ?>:</strong>
         <span><?= nl2br(htmlspecialchars($msg['body'])) ?></span>
         <em><?= htmlspecialchars($msg['created_at']) ?></em>
